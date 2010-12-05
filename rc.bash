@@ -116,8 +116,6 @@ for f in /usr/doc/git-*/contrib/completion/git-completion.bash ; do
 	fi
 done
 
-[ -e /etc/bash_completion ] && source /etc/bash_completion
-
 escseq() {
 	local ESC
 	local fmt
