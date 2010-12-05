@@ -12,29 +12,42 @@ case "`uname`" in MINGW32*) RUNNING_ON_CYGWIN=1 ;; *) RUNNING_ON_CYGWIN= ; esac
 if [ $TERM != dumb ] ; then
 	exists stty      && stty kill undef
 	exists setterm   && setterm -blength 0
-	exists dircolors && eval $( dircolors | sed -r '
-		/:\*.m4a=/!s!:\*\.wav=([^:]*)!&:*.m4a=\1!;
-		/:\*.txz=/!s!:\*\.tgz=([^:]*)!&:*.txz=\1!;
-		/:\*.xz=/!s!:\*\.gz=([^:]*)!&:*.xz=\1!;
-	' )
+	exists dircolors && eval $( dircolors )
 fi
 
-# clean up: delete all X .serverauth files in home dir except the latest
-perl <<''
-use File::stat;
-chdir or die;
-@f = <.serverauth.*>;
-@m = map { (stat $_)->mtime } @f;
-@f = @f[ sort { $m[$a] <=> $m[$b] } 0..$#f ];
-pop @f;
-unlink @f;
+fixups() {
+	# everything in one perl invocation to minimise startup time
+	perl <<''
+	use Env qw( HOME @PATH @MANPATH @LS_COLORS );
+	sub shquo { map { s/'/'\''/g; "'$_'" } my @c = @_ }
+	;
+	## clean up: delete all X .serverauth files in home dir except the latest
+	use File::stat;
+	chdir or die;
+	@f = <.serverauth.*>;
+	@m = map { (stat $_)->mtime } @f;
+	@f = @f[ sort { $m[$a] <=> $m[$b] } 0..$#f ];
+	pop @f;
+	unlink @f;
+	;
+	# drop empty, dupe and current-dir components from $PATH and prepend $HOME/bin et al
+	@p = grep !/\A\.?\z/, @PATH;
+	@p = grep { !$seen_p{$_}++ } "$HOME/bin", qw( /sbin /usr/sbin ), @p;
+	printf "PATH=%s\n", shquo join ':', @p;
+	;
+	# fix up some dircolors
+	if ( @LS_COLORS ) {
+		%c = map { split /=/, $_, 2 } @LS_COLORS;
+		$c{'*.m4a'} = $c{'*.wav'} unless exists $c{'*.m4a'};
+		$c{'*.txz'} = $c{'*.tgz'} unless exists $c{'*.txz'};
+		 $c{'*.xz'} =  $c{'*.gz'} unless exists  $c{'*.xz'};
+		printf "LS_COLORS=%s\n", shquo join ':', map { join '=', $_, $c{$_} } sort keys %c;
+	}
+	;
+	printf "MANPATH=%s\n", shquo join ':', grep { !$seen_hm{$_}++ } $hm, @MANPATH;
 
-# remove all empty and current-dir components from $PATH and prepend $HOME/bin
-export PATH=`perl -MEnv=@PATH,HOME -e'print join ":", "$HOME/bin", "/sbin", "/usr/sbin", grep !/\A\.?\z/, @PATH'`
-
-if [ $( expr ":$MANPATH:" : ".*:$HOME/man:" ) -eq 0 ] ; then
-	export MANPATH="$HOME/man:$MANPATH"
-fi
+}
+eval $( fixups )
 
 if exists locale && locale -a | grep -cq utf8 ; then
 	# looks like Linux
