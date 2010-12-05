@@ -38,6 +38,7 @@ fixups() {
 	# fix up some dircolors
 	if ( @LS_COLORS ) {
 		%c = map { split /=/, $_, 2 } @LS_COLORS;
+		$c{'di'} = '01;38;5;32';
 		$c{'*.m4a'} = $c{'*.wav'} unless exists $c{'*.m4a'};
 		$c{'*.txz'} = $c{'*.tgz'} unless exists $c{'*.txz'};
 		 $c{'*.xz'} =  $c{'*.gz'} unless exists  $c{'*.xz'};
@@ -203,7 +204,7 @@ exists git && alias diff='git diff --no-index'
 
 # GNU ls or BSD?
 if ls --version &> /dev/null ; then
-	alias ls='/bin/ls -F -b --color=auto -T 0'
+	alias ls='/bin/ls -F --quoting-style=shell --color=auto -T0 -v --block-size='\\\''1 --time-style=+$'\''\e[38;5;246m%d.%b’%y \e[38;5;252m%T\e[0m'\'
 else
 	alias ls='/bin/ls -F -b -G'
 fi
