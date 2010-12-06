@@ -204,7 +204,14 @@ exists git && alias diff='git diff --no-index'
 
 # GNU ls or BSD?
 if ls --version &> /dev/null ; then
-	alias ls='/bin/ls -F --quoting-style=shell --color=auto -T0 -v --block-size='\\\''1 --time-style=+$'\''\e[38;5;246m%d.%b’%y \e[38;5;252m%T\e[0m'\'
+	ls_alias='/bin/ls -F --quoting-style=shell --color=auto -T0 -v'
+	if ls --block-size=\'1 --version &> /dev/null ; then
+		ls_alias="$ls_alias"' --block-size='\\\''1'
+	fi
+	if ls --time-style=iso --version &> /dev/null ; then
+		ls_alias="$ls_alias"' --time-style=+$'\''\e[38;5;246m%d.%b’%y \e[38;5;252m%T\e[0m'\'
+	fi
+	alias ls="$ls_alias"
 else
 	alias ls='/bin/ls -F -b -G'
 fi
