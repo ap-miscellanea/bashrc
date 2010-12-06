@@ -2,7 +2,7 @@
 
 exists() { which "$@" &> /dev/null ; }
 
-case "`uname`" in MINGW32*) RUNNING_ON_CYGWIN=1 ;; *) RUNNING_ON_CYGWIN= ; esac
+case "$MSYSTEM" in MINGW32) RUNNING_ON_CYGWIN=1 ;; *) RUNNING_ON_CYGWIN= ; esac
 
 # GENERIC ENVIRONMENT STUFF
 # =========================
@@ -90,7 +90,7 @@ export GREP_OPTIONS="--directories=skip --binary-files=without-match"
 export RSYNC_RSH=ssh
 export PERL5LIB="$HOME/lib"
 
-case "`hostname`" in
+case "$HOSTNAME" in
 	klangraum|klangraum.*)
 		export CFLAGS='-O2 -march=i686 -mtune=native -pipe -fomit-frame-pointer'
 		export CPPFLAGS="$CFLAGS"
@@ -178,7 +178,7 @@ PS1=( "${PS1[@]}" ' )) \$ ' %0 )
 PS1=$( escseq "${PS1[@]}" )
 
 # cygwin hack to get initial $PWD reformatted properly
-case "`uname`" in MINGW32*) cd "$PWD" ; esac
+[ "$RUNNING_ON_CYGWIN" ] &&  cd "$PWD"
 
 mcd()  { mkdir -p "$1" ; cd "$1" ; }
 ggv()  { git grep -l -E "$@" | xargs ${DISPLAY:+g}vim ; }
