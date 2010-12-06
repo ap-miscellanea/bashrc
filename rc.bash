@@ -210,7 +210,7 @@ else
 fi
 
 # try to use native GVIM on Windows
-for gvim in /c/Programme/Vim/vim*/gvim.exe ; do [ -x $gvim ] && alias gvim="$gvim" ; done
+for gvim in /c/Programme/Vim/vim*/gvim.exe ; do [ -x "$gvim" ] && alias gvim="$gvim" ; done
 
 exists perldoc-complete && complete -C perldoc-complete -o nospace -o default pod
 
@@ -227,7 +227,9 @@ unset MAIL MAILCHECK MAILPATH
 
 unset CDPATH
 
-if [ ${BASH_VERSION%%.*} -gt 1 ] ; then
+while : ; do
+	case $BASH_VERSION in 1.*) break ; esac
+
 	shopt -s \
 		checkhash \
 		checkwinsize \
@@ -237,19 +239,21 @@ if [ ${BASH_VERSION%%.*} -gt 1 ] ; then
 		histverify \
 		no_empty_cmd_completion \
 		xpg_echo
-fi
 
-if [ ${BASH_VERSION%%.*} -gt 2 ] ; then
+	case $BASH_VERSION in 2.*) break ; esac
+
 	HISTCONTROL=erasedups
-fi
 
-if [ ${BASH_VERSION%%.*} -gt 3 ] ; then
+	case $BASH_VERSION in 3.*) break ; esac
+
 	unalias ..
 	alias ...=../.. ....=../../.. .....=../../../..
 	shopt -s \
 		autocd \
 		checkjobs \
 		globstar
-fi
+
+	break
+done
 
 unset RUNNING_ON_CYGWIN
