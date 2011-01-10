@@ -17,7 +17,7 @@ fi
 
 fixups() {
 	# everything in one perl invocation to minimise startup time
-	perl <<''
+	perl << '__END__'
 	use Env qw( HOME @PATH @MANPATH @LS_COLORS );
 	sub shquo { map { s/'/'\''/g; "'$_'" } my @c = @_ }
 	;
@@ -46,7 +46,7 @@ fixups() {
 	}
 	;
 	printf "MANPATH=%s\n", shquo join ':', grep { !$seen_hm{$_}++ } $hm, @MANPATH;
-
+__END__
 }
 eval $( fixups )
 
