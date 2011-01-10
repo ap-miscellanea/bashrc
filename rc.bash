@@ -181,7 +181,6 @@ PS1=$( escseq "${PS1[@]}" )
 [ "$RUNNING_ON_CYGWIN" ] &&  cd "$PWD"
 
 mcd()  { mkdir -p "$1" ; cd "$1" ; }
-ggv()  { git grep -l -E "$@" | xargs ${DISPLAY:+g}vim ; }
 
 unalias -a
 alias -- \
@@ -194,6 +193,7 @@ alias -- \
 	cal='cal -m' \
 	ddiff='LC_ALL=C TZ=UTC0 command diff -urd --unidirectional-new-file' \
 	gg='git grep -E' \
+	ggv='git grep -O${DISPLAY:+g}vim -E' \
 	ll='ls -l' \
 	la='ll -A' \
 	man='LC_CTYPE=C man' \
