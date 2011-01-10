@@ -226,7 +226,6 @@ exists perldoc-complete && complete -C perldoc-complete -o nospace -o default po
 
 [ "$RUNNING_ON_CYGWIN" ] || bind -x '"\C-l": clear'
 
-HISTCONTROL=erasedups
 HISTIGNORE="l[sla]:[bf]g"
 HISTSIZE=200000
 HISTFILESIZE=${HISTSIZE}
