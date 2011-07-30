@@ -204,10 +204,11 @@ exists git && alias diff='git diff --no-index'
 
 # GNU ls or BSD?
 if ls --version &> /dev/null ; then
-	ls_alias='/bin/ls -F --quoting-style=shell --color=auto -T0 -v'
-	if ls --group-directories-first --version &> /dev/null ; then
-		ls_alias="$ls_alias"' --group-directories-first'
-	fi
+	ls_alias='/bin/ls -F --quoting-style=escape --color=auto -T0 -v'
+	#ls_alias='/bin/ls -F --quoting-style=shell --color=auto -T0 -v'
+	# if ls --group-directories-first --version &> /dev/null ; then
+	# 	ls_alias="$ls_alias"' --group-directories-first'
+	# fi
 	if ls --block-size=\'1 --version &> /dev/null ; then
 		ls_alias="$ls_alias"' --block-size='\\\''1'
 	fi
