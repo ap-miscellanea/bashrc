@@ -111,12 +111,14 @@ esac
 # SHELL CUSTOMISATION
 # ===================
 
-for f in /usr/doc/git-*/contrib/completion/git-completion.bash ; do
-	if [ -e "$f" ] ; then
-		source "$f"
-		break
-	fi
-done
+if exists git ; then
+	for f in /usr/doc/git-*/contrib/completion/git-completion.bash ; do
+		if [ -e "$f" ] ; then
+			source "$f"
+			break
+		fi
+	done
+fi
 
 escseq() {
 	local ESC
@@ -193,15 +195,23 @@ alias -- \
 	cp='ionice -c3 cp' \
 	cal='cal -m' \
 	ddiff='LC_ALL=C TZ=UTC0 command diff -urd --unidirectional-new-file' \
-	gg='git grep -E' \
-	ggv='git grep -O${DISPLAY:+g}vim -E' \
 	ll='ls -l' \
 	la='ll -A' \
 	man='LC_CTYPE=C man' \
 	mv='ionice -c3 mv' \
 	pod=perldoc \
 
-exists git && alias diff='git diff --no-index'
+if exists git ; then
+	gg() {
+		[ "`git rev-parse --is-inside-work-tree 2>&-`" = true ] || set -- --no-index ${1+"$@"}
+		git grep -E ${1+"$@"}
+	}
+	alias -- \
+		ggv='gg -O${DISPLAY:+g}vim' \
+		diff='git diff --no-index' \
+		gh='cd `git rev-parse --show-cdup`' \
+
+fi
 
 # GNU ls or BSD?
 if ls --version &> /dev/null ; then
