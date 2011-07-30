@@ -205,6 +205,8 @@ alias -- \
 	man='LC_CTYPE=C man' \
 	mvi='mv -i' \
 	pod=perldoc \
+	ssh4='ssh -c arcfour' \
+	scp4='scp -c arcfour' \
 
 if exists ionice ; then
 	case "$HOSTNAME" in
