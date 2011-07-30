@@ -105,6 +105,12 @@ case "$HOSTNAME" in
 	plurisight|plurisight.*)
 		export PATH=/opt/git/bin:$PATH
 		;;
+	brixton|brixton.*)
+		export MODULEBUILDRC="/home/ap/perl5/.modulebuildrc"
+		export PERL_MM_OPT="INSTALL_BASE=/home/ap/perl5"
+		export PERL5LIB="/home/ap/perl5/lib/perl5:/home/ap/perl5/lib/perl5/i486-linux-gnu-thread-multi"
+		export PATH="/home/ap/perl5/bin:$PATH"
+		;;
 esac
 
 
