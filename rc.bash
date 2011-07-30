@@ -12,7 +12,7 @@ case "$MSYSTEM" in MINGW32) RUNNING_ON_CYGWIN=1 ;; *) RUNNING_ON_CYGWIN= ; esac
 if [ $TERM != dumb ] ; then
 	exists stty      && stty kill undef
 	exists setterm   && setterm -blength 0
-	exists dircolors && eval $( dircolors )
+	exists dircolors && eval $( TERM=vt100 dircolors )
 fi
 
 fixups() {
