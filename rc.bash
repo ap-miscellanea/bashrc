@@ -2,6 +2,7 @@
 
 exists() { which "$@" &> /dev/null ; }
 running_on_cygwin () { [ "$MSYSTEM" = MINGW32 ] ; }
+interactive_shell () { [[ $- =~ i ]] ; }
 
 # GENERIC ENVIRONMENT STUFF
 # =========================
@@ -54,7 +55,7 @@ export LC_ALL=
 export LC_COLLATE=C
 export LC_CTYPE=C
 
-if exists locale ; then
+if interactive_shell && exists locale ; then
 	L=( $( locale -a ) )
 	for l in "${L[@]}" ; do
 		case "$l" in
@@ -250,7 +251,9 @@ for gvim in /c/Programme/Vim/vim*/gvim.exe ; do [ -x "$gvim" ] && alias gvim="$g
 
 exists perldoc-complete && complete -C perldoc-complete -o nospace -o default pod
 
-running_on_cygwin || bind -x '"\C-l": clear'
+if ! running_on_cygwin ; then
+	if interactive_shell ; then bind -x '"\C-l": clear' ; fi
+fi
 
 HISTIGNORE='l[sla]:[bf]g'
 HISTSIZE=200000
