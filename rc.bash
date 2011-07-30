@@ -1,13 +1,12 @@
 #!/bin/bash
 
 exists() { which "$@" &> /dev/null ; }
-
-case "$MSYSTEM" in MINGW32) RUNNING_ON_CYGWIN=1 ;; *) RUNNING_ON_CYGWIN= ; esac
+running_on_cygwin () { [ "$MSYSTEM" = MINGW32 ] ; }
 
 # GENERIC ENVIRONMENT STUFF
 # =========================
 
-[ "$RUNNING_ON_CYGWIN" ] && TERM=cygwin
+running_on_cygwin && TERM=cygwin
 
 if [ $TERM != dumb ] ; then
 	exists stty      && stty kill undef
@@ -62,7 +61,7 @@ elif exists locale && locale -a | grep -cq UTF-8 ; then
 	export LANG=en_GB.UTF-8
 	export LC_COLLATE=C
 	export LC_CTYPE=de_DE.UTF-8
-elif [ "$RUNNING_ON_CYGWIN" ] ; then
+elif running_on_cygwin ; then
 	: # no comment...
 else
 	echo 'Could not find UTF-8 locales! No locale configured' 1>&2
@@ -187,7 +186,7 @@ PS1=( "${PS1[@]}" ' )) \$ ' %0 )
 PS1=$( escseq "${PS1[@]}" )
 
 # cygwin hack to get initial $PWD reformatted properly
-[ "$RUNNING_ON_CYGWIN" ] &&  cd "$PWD"
+running_on_cygwin &&  cd "$PWD"
 
 mcd()  { mkdir -p "$1" ; cd "$1" ; }
 
@@ -254,7 +253,7 @@ for gvim in /c/Programme/Vim/vim*/gvim.exe ; do [ -x "$gvim" ] && alias gvim="$g
 
 exists perldoc-complete && complete -C perldoc-complete -o nospace -o default pod
 
-[ "$RUNNING_ON_CYGWIN" ] || bind -x '"\C-l": clear'
+running_on_cygwin || bind -x '"\C-l": clear'
 
 HISTIGNORE='l[sla]:[bf]g'
 HISTSIZE=200000
@@ -294,5 +293,3 @@ while : ; do
 
 	break
 done
-
-unset RUNNING_ON_CYGWIN
