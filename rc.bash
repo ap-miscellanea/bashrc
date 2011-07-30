@@ -192,14 +192,23 @@ alias -- \
 	...='cd ../..' \
 	....='cd ../../..' \
 	.....='cd ../../../..' \
-	cp='ionice -c3 cp' \
 	cal='cal -m' \
 	ddiff='LC_ALL=C TZ=UTC0 command diff -urd --unidirectional-new-file' \
 	ll='ls -l' \
 	la='ll -A' \
 	man='LC_CTYPE=C man' \
-	mv='ionice -c3 mv' \
 	pod=perldoc \
+
+if exists ionice ; then
+	case "$HOSTNAME" in
+		ksm|ksm.*) ;;
+		*) alias -- \
+			cp='ionice -c 3 cp' \
+			mv='ionice -c 3 mv' \
+			rsync='ionice -c 3 rsync' \
+			;;
+	esac
+fi
 
 if exists git ; then
 	gg() {
