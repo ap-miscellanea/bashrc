@@ -203,6 +203,7 @@ alias -- \
 	ll='ls -l' \
 	la='ll -A' \
 	man='LC_CTYPE=C man' \
+	mvi='mv -i' \
 	pod=perldoc \
 
 if exists ionice ; then
