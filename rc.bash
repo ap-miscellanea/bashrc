@@ -49,22 +49,19 @@ __END__
 }
 eval $( fixups )
 
-if exists locale && locale -a | grep -cq utf8 ; then
-	# looks like Linux
-	export LC_ALL=
-	export LANG=en_GB.utf8
-	export LC_COLLATE=C
-	export LC_CTYPE=de_DE.utf8
-elif exists locale && locale -a | grep -cq UTF-8 ; then
-	# we seem to be on FreeBSD
-	export LC_ALL=
-	export LANG=en_GB.UTF-8
-	export LC_COLLATE=C
-	export LC_CTYPE=de_DE.UTF-8
-elif running_on_cygwin ; then
-	: # no comment...
-else
-	echo 'Could not find UTF-8 locales! No locale configured' 1>&2
+export LANG=C
+export LC_ALL=
+export LC_COLLATE=C
+export LC_CTYPE=C
+
+if exists locale ; then
+	L=( $( locale -a ) )
+	for l in "${L[@]}" ; do
+		case "$l" in
+			en_GB.utf8|en_GB.UTF-8) export LANG=$l ;;
+			de_DE.utf8|de_DE.UTF-8) export LC_CTYPE=$l ;;
+		esac
+	done
 fi
 
 export EDITOR=vim
