@@ -2,7 +2,7 @@
 
 exists() { which "$@" &> /dev/null ; }
 running_on_cygwin () { [ "$MSYSTEM" = MINGW32 ] ; }
-interactive_shell () { [[ $- =~ i ]] ; }
+interactive_shell () { case "$-" in *i*) return 0 ;; *) return 1 ;; esac ; }
 
 # GENERIC ENVIRONMENT STUFF
 # =========================
