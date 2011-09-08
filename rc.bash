@@ -152,15 +152,6 @@ termtitle() {
 	"$@"
 }
 
-putxy() {
-	local X=$1 ; shift
-	local Y=$1 ; shift
-	local IFS=''
-	printf '\e7' # save position
-	printf '\e[%d;%dH%s' "$X" "$Y" "$*"
-	printf '\e8' # restore position
-}
-
 prompt_termtitle() {
 	case "$PWD" in
 		"$HOME") p=\~         ;;
