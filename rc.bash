@@ -161,17 +161,29 @@ prompt_termtitle() {
 	termtitle "$USER@${HOSTNAME%%.*} : $p"
 }
 
-PS1=( '[' %36 '\t' %0 '] ' )
+if type -t __git_ps1 > /dev/null ; then
+	dirbranch() {
+		x=$(__git_ps1 "%s")
+		[ "$x" ] || return 1
+		echo "$x"
+	}
+else
+	dirbranch() { return 1 ; }
+fi
+
+exists dirsize || dirsize() { echo '?' ; }
+
+append_ps1() { PS1=( "${PS1[@]}" "$@" ) ; }
+
+PS1=()
+append_ps1 '[' %36 '\t' %0 '] '
 case $TERM in
 	xterm*|rxvt*|putty*|screen)
 		PROMPT_COMMAND=prompt_termtitle ;;
 	*)
-		PS1=( "${PS1[@]}" %1 '\u@\h' %0 ' : ' ) ;;
+		append_ps1 %1 '\u@\h' %0 ' : ' ;;
 esac
-PS1=( "${PS1[@]}" %1 %33 '\w' %0 %1 ' ($( ' )
-type -t __git_ps1 > /dev/null && PS1=( "${PS1[@]}" 'x=$(__git_ps1 "%s"); [ "$x" ] && echo "$x" || ' )
-if exists dirsize ; then PS1=( "${PS1[@]}" 'dirsize -Hb' ) ; else PS1=( "${PS1[@]}" 'printf '\''?'\' ) ; fi
-PS1=( "${PS1[@]}" ' )) \$ ' %0 )
+append_ps1 %1 %33 '\w' %0 %1 ' ($( dirbranch || dirsize -Hb )) \$ ' %0
 PS1=$( escseq "${PS1[@]}" )
 
 # cygwin hack to get initial $PWD reformatted properly
