@@ -89,10 +89,10 @@ export PERL5LIB=$HOME/lib
 
 case "$HOSTNAME" in
 	klangraum|klangraum.*)
-		export CFLAGS='-O2 -march=i686 -mtune=native -pipe -fomit-frame-pointer'
+		export CFLAGS='-O2 -march=native -mtune=native -pipe -fomit-frame-pointer'
 		export CPPFLAGS=$CFLAGS
 		export CXXFLAGS=$CFLAGS
-		export MAKEFLAGS=-j5
+		export MAKEFLAGS=-j12
 		#export http_proxy=http://localhost:8080
 		export no_proxy=127.0.0.1,192.168.0.96,plasmasturm.org,klangraum.dyndns.org
 		export TEXINPUTS=".:$HOME/share/tex/currvita/:$HOME/share/tex/rechnung310/:"
