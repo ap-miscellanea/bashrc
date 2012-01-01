@@ -277,10 +277,9 @@ use Env qw( HOME @PATH @MANPATH @LS_COLORS );
 sub shquo { map { s/'/'\''/g; "'$_'" } my @c = @_ }
 
 ## clean up: delete all X .serverauth files in home dir except the latest
-use File::stat;
 chdir or die;
 @f = <.serverauth.*>;
-@m = map { (stat $_)->mtime } @f;
+@m = map { (stat $_)[9] } @f;
 @f = @f[ sort { $m[$a] <=> $m[$b] } 0..$#f ];
 pop @f;
 unlink @f;
