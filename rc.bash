@@ -231,6 +231,8 @@ if exists git ; then
 
 fi
 
+strftime_format=$'\e[38;5;246m%d.%b’%y \e[38;5;252m%T\e[0m'
+
 # GNU ls or BSD?
 if ls --version &> /dev/null ; then
 	ls_alias='/bin/ls -F --quoting-style=escape --color=auto -T0 -v'
@@ -239,12 +241,13 @@ if ls --version &> /dev/null ; then
 	# 	ls_alias="$ls_alias"' --group-directories-first'
 	# fi
 	if ls --block-size=\'1 --version &> /dev/null ; then
-		ls_alias="$ls_alias"' --block-size='\\\''1'
+		ls_alias="$ls_alias --block-size="\\\''1'
 	fi
 	if ls --time-style=iso --version &> /dev/null ; then
-		ls_alias="$ls_alias"' --time-style=+$'\''\e[38;5;246m%d.%b’%y \e[38;5;252m%T\e[0m'\'
+		ls_alias="$ls_alias --time-style=+'$strftime_format'"
 	fi
 	alias ls="$ls_alias"
+	unset ls_alias
 else
 	alias ls='/bin/ls -F -b -G'
 fi
@@ -261,6 +264,7 @@ fi
 HISTIGNORE='l[sla]:[bf]g'
 HISTSIZE=200000
 HISTFILESIZE=${HISTSIZE}
+HISTTIMEFORMAT="$strftime_format  "
 
 FCEDIT=vim
 
