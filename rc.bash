@@ -287,8 +287,6 @@ while : ; do
 
 	case $BASH_VERSION in 3.*) break ; esac
 
-	unalias ..
-	alias ...=../.. ....=../../.. .....=../../../..
 	shopt -s \
 		autocd \
 		checkjobs \
