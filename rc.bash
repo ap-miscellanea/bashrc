@@ -103,7 +103,7 @@ escseq() {
 	esac
 	while [ "$*" ] ; do
 		case "$1" in
-			%*) ESC="$ESC;${1##%}" ;;
+			%*) ESC="$ESC;${1#%}" ;;
 			*)
 				[ "$ESC" ] && printf $fmt "$ESC"
 				printf '%s' "$1"
@@ -113,23 +113,6 @@ escseq() {
 		shift
 	done
 	[ "$ESC" ] && printf $fmt "$ESC"
-}
-
-termtitle() {
-	(($#)) || { echo "usage: $0 title [cmd [arg ...]]"; }
-	local TITLE=$1
-	shift
-	printf '\e]0;%s\007' "$TITLE"
-	"$@"
-}
-
-prompt_termtitle() {
-	case "$PWD" in
-		"$HOME") p=\~         ;;
-		/)       p=/          ;;
-		*)       p=${PWD##*/} ;;
-	esac
-	termtitle "$USER@${HOSTNAME%%.*} : $p"
 }
 
 if type -t __git_ps1 > /dev/null ; then
@@ -144,18 +127,20 @@ fi
 
 exists dirsize || dirsize() { echo '?' ; }
 
-append_ps1() { PS1=( "${PS1[@]}" "$@" ) ; }
+PS1=$( escseq '[' %36 '\t' %0 '] ' %1 '\h ' %1 %33 '\w' %1 ' ($( dirbranch || dirsize -Hb )) \$ ' %0 )
 
-PS1=()
-append_ps1 '[' %36 '\t' %0 '] '
 case $TERM in
 	xterm*|rxvt*|putty*|screen)
+		prompt_termtitle() {
+			case "$PWD" in
+				"$HOME") p=\~         ;;
+				/)       p=/          ;;
+				*)       p=${PWD##*/} ;;
+			esac
+			printf '\e]0;%s\007' "$USER@${HOSTNAME%%.*} : $p"
+		}
 		PROMPT_COMMAND=prompt_termtitle ;;
-	*)
-		append_ps1 %1 '\u@\h' %0 ' : ' ;;
 esac
-append_ps1 %1 %33 '\w' %0 %1 ' ($( dirbranch || dirsize -Hb )) \$ ' %0
-PS1=$( escseq "${PS1[@]}" )
 
 # cygwin hack to get initial $PWD reformatted properly
 running_on_cygwin &&  cd "$PWD"
