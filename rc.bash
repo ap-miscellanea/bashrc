@@ -116,6 +116,9 @@ escseq() {
 }
 
 if type -t __git_ps1 > /dev/null ; then
+	GIT_PS1_SHOWDIRTYSTATE=1
+	#GIT_PS1_SHOWSTASHSTATE=1
+	#GIT_PS1_SHOWUNTRACKEDFILES=1
 	dirbranch() {
 		x=$(__git_ps1 "%s")
 		[ "$x" ] || return 1
