@@ -87,8 +87,8 @@ export GREP_OPTIONS='--directories=skip --binary-files=without-match'
 export RSYNC_RSH=ssh
 export PERL_CPANM_OPT=--no-man-pages
 
-case "$HOSTNAME" in
-	klangraum|klangraum.*)
+case ${HOSTNAME%%.*} in
+	klangraum)
 		export CFLAGS='-O2 -march=native -mtune=native -pipe -fomit-frame-pointer'
 		export CPPFLAGS=$CFLAGS
 		export CXXFLAGS=$CFLAGS
@@ -98,10 +98,10 @@ case "$HOSTNAME" in
 		export TEXINPUTS=".:$HOME/share/tex/currvita/:$HOME/share/tex/rechnung310/:"
 		export PERL_CPANM_OPT="$PERL_CPANM_OPT --mirror-only --mirror $HOME/share/minicpan"
 		;;
-	plurisight|plurisight.*)
+	plurisight)
 		export PATH=/opt/git/bin:$PATH
 		;;
-	brixton|brixton.*)
+	brixton)
 		export MODULEBUILDRC="/home/ap/perl5/.modulebuildrc"
 		export PERL_MM_OPT="INSTALL_BASE=/home/ap/perl5"
 		export PERL5LIB="/home/ap/perl5/lib/perl5:/home/ap/perl5/lib/perl5/i486-linux-gnu-thread-multi"
@@ -213,8 +213,8 @@ alias -- \
 	scp4='scp -c arcfour' \
 
 if exists ionice ; then
-	case "$HOSTNAME" in
-		ksm|ksm.*) ;;
+	case ${HOSTNAME%%.*} in
+		ksm) ;;
 		*) alias -- \
 			cp='ionice -c 3 cp' \
 			mv='ionice -c 3 mv' \
