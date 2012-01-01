@@ -268,24 +268,24 @@ sub uniq  { my %seen; grep { !$seen{$_}++ } @_ }
 
 ## clean up: delete all X .serverauth files in home dir except the latest
 chdir or die;
-my @f = <.serverauth.*>;
-my @m = map { (stat $_)[9] } @f;
-@f = @f[ sort { $m[$a] <=> $m[$b] } 0..$#f ];
-pop @f;
-unlink @f;
+unlink do {
+	my @file = <.serverauth.*>;
+	@file = map $$_[0], sort { $a->[1] <=> $b->[1] } map [ $_, (stat $_)[9] ], @file;
+	pop @file;
+	@file;
+};
 
 ## drop empty, dupe and current-dir components from $PATH and prepend $HOME/bin et al
 my @p = grep !/\A\.?\z/, env 'PATH';
-@p = uniq "$ENV{HOME}/bin", qw( /sbin /usr/sbin ), @p;
-printf "PATH=%s\n", shquo join ':', @p;
+printf "PATH=%s\n", shquo join ':', uniq "$ENV{HOME}/bin", qw( /sbin /usr/sbin ), @p;
 
 ## fix up some dircolors
 if ( my @c = env 'LS_COLORS' ) {
 	my %c = map { split /=/, $_, 2 } @c;
 	$c{'di'} = '01;38;5;32';
-	$c{'*.m4a'} = $c{'*.wav'} unless exists $c{'*.m4a'};
-	$c{'*.txz'} = $c{'*.tgz'} unless exists $c{'*.txz'};
-	$c{ '*.xz'} = $c{ '*.gz'} unless exists  $c{'*.xz'};
+	$c{'*.m4a'} ||= $c{'*.wav'};
+	$c{'*.txz'} ||= $c{'*.tgz'};
+	$c{ '*.xz'} ||= $c{ '*.gz'};
 	printf "LS_COLORS=%s\n", shquo join ':', map { join '=', $_, $c{$_} } sort keys %c;
 }
 
