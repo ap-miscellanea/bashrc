@@ -262,7 +262,7 @@ return <<'__END__'
 
 #!perl
 use strict;
-use Env qw( HOME @PATH @MANPATH @LS_COLORS );
+sub env   { grep length, split /:/, $ENV{$_[0]} }
 sub shquo { map { s/'/'\''/g; "'$_'" } my @c = @_ }
 sub uniq  { my %seen; grep { !$seen{$_}++ } @_ }
 
@@ -275,13 +275,13 @@ pop @f;
 unlink @f;
 
 ## drop empty, dupe and current-dir components from $PATH and prepend $HOME/bin et al
-my @p = grep !/\A\.?\z/, @PATH;
-@p = uniq "$HOME/bin", qw( /sbin /usr/sbin ), @p;
+my @p = grep !/\A\.?\z/, env 'PATH';
+@p = uniq "$ENV{HOME}/bin", qw( /sbin /usr/sbin ), @p;
 printf "PATH=%s\n", shquo join ':', @p;
 
 ## fix up some dircolors
-if ( @LS_COLORS ) {
-	my %c = map { split /=/, $_, 2 } @LS_COLORS;
+if ( my @c = env 'LS_COLORS' ) {
+	my %c = map { split /=/, $_, 2 } @c;
 	$c{'di'} = '01;38;5;32';
 	$c{'*.m4a'} = $c{'*.wav'} unless exists $c{'*.m4a'};
 	$c{'*.txz'} = $c{'*.tgz'} unless exists $c{'*.txz'};
@@ -289,6 +289,6 @@ if ( @LS_COLORS ) {
 	printf "LS_COLORS=%s\n", shquo join ':', map { join '=', $_, $c{$_} } sort keys %c;
 }
 
-printf "MANPATH=%s\n", shquo join ':', uniq @MANPATH;
+printf "MANPATH=%s\n", shquo join ':', uniq env 'MANPATH';
 
 __END__
