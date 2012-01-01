@@ -85,7 +85,7 @@ export BROWSER=google-chrome
 export ZIPOPT=-9
 export GREP_OPTIONS='--directories=skip --binary-files=without-match'
 export RSYNC_RSH=ssh
-export PERL5LIB=$HOME/lib
+export PERL_CPANM_OPT=--no-man-pages
 
 case "$HOSTNAME" in
 	klangraum|klangraum.*)
@@ -96,8 +96,7 @@ case "$HOSTNAME" in
 		#export http_proxy=http://localhost:8080
 		export no_proxy=127.0.0.1,192.168.0.96,plasmasturm.org,klangraum.dyndns.org
 		export TEXINPUTS=".:$HOME/share/tex/currvita/:$HOME/share/tex/rechnung310/:"
-		export PATH="$HOME/perl/5.10.0/bin:$PATH"
-		export PERL_CPANM_OPT="--mirror-only --mirror $HOME/share/minicpan"
+		export PERL_CPANM_OPT="$PERL_CPANM_OPT --mirror-only --mirror $HOME/share/minicpan"
 		;;
 	plurisight|plurisight.*)
 		export PATH=/opt/git/bin:$PATH
@@ -121,6 +120,11 @@ if exists git ; then
 			break
 		fi
 	done
+fi
+
+if [ -d ~/perl5/perlbrew ] ; then
+	source ~/perl5/perlbrew/etc/bashrc
+	source ~/perl5/perlbrew/etc/perlbrew-completion.bash
 fi
 
 escseq() {
