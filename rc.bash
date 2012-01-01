@@ -261,25 +261,27 @@ done
 return <<'__END__'
 
 #!perl
+use strict;
 use Env qw( HOME @PATH @MANPATH @LS_COLORS );
 sub shquo { map { s/'/'\''/g; "'$_'" } my @c = @_ }
+sub uniq  { my %seen; grep { !$seen{$_}++ } @_ }
 
 ## clean up: delete all X .serverauth files in home dir except the latest
 chdir or die;
-@f = <.serverauth.*>;
-@m = map { (stat $_)[9] } @f;
+my @f = <.serverauth.*>;
+my @m = map { (stat $_)[9] } @f;
 @f = @f[ sort { $m[$a] <=> $m[$b] } 0..$#f ];
 pop @f;
 unlink @f;
 
 ## drop empty, dupe and current-dir components from $PATH and prepend $HOME/bin et al
-@p = grep !/\A\.?\z/, @PATH;
-@p = grep { !$seen_p{$_}++ } "$HOME/bin", qw( /sbin /usr/sbin ), @p;
+my @p = grep !/\A\.?\z/, @PATH;
+@p = uniq "$HOME/bin", qw( /sbin /usr/sbin ), @p;
 printf "PATH=%s\n", shquo join ':', @p;
 
 ## fix up some dircolors
 if ( @LS_COLORS ) {
-	%c = map { split /=/, $_, 2 } @LS_COLORS;
+	my %c = map { split /=/, $_, 2 } @LS_COLORS;
 	$c{'di'} = '01;38;5;32';
 	$c{'*.m4a'} = $c{'*.wav'} unless exists $c{'*.m4a'};
 	$c{'*.txz'} = $c{'*.tgz'} unless exists $c{'*.txz'};
@@ -287,6 +289,6 @@ if ( @LS_COLORS ) {
 	printf "LS_COLORS=%s\n", shquo join ':', map { join '=', $_, $c{$_} } sort keys %c;
 }
 
-printf "MANPATH=%s\n", shquo join ':', grep { !$seen_hm{$_}++ } $hm, @MANPATH;
+printf "MANPATH=%s\n", shquo join ':', uniq @MANPATH;
 
 __END__
