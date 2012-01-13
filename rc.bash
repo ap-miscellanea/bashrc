@@ -9,6 +9,8 @@ interactive_shell () { case "$-" in *i*) return 0 ;; *) return 1 ;; esac ; }
 
 running_on_cygwin && TERM=cygwin
 
+[ -d ~/perl5/perlbrew ] && source ~/perl5/perlbrew/etc/bashrc
+
 if [ $TERM != dumb ] ; then
 	exists stty      && stty kill undef
 	exists setterm   && setterm -blength 0
@@ -80,6 +82,8 @@ esac
 # SHELL CUSTOMISATION
 # ===================
 
+[ -d ~/perl5/perlbrew ] && source ~/perl5/perlbrew/etc/perlbrew-completion.bash
+
 if exists git ; then
 	for f in /usr/doc/git-*/contrib/completion/git-completion.bash ; do
 		if [ -e "$f" ] ; then
@@ -87,11 +91,6 @@ if exists git ; then
 			break
 		fi
 	done
-fi
-
-if [ -d ~/perl5/perlbrew ] ; then
-	source ~/perl5/perlbrew/etc/bashrc
-	source ~/perl5/perlbrew/etc/perlbrew-completion.bash
 fi
 
 escseq() {
