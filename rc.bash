@@ -129,7 +129,13 @@ fi
 
 exists dirsize || dirsize() { echo '?' ; }
 
-PS1=$( escseq '[' %36 '\t' %0 '] ' %1 '\h ' %1 %33 '\w' %1 ' ($( dirbranch || dirsize -Hb )) \$ ' %0 )
+jobs_indicator() {
+	local n=$( jobs | wc -l )
+	(( n == 0 )) && return
+	echo $n+
+}
+
+PS1=$( escseq '[' %36 '\t' %0 '] ' %1 '\h ' %1 %33 '\w' %1 ' ($( dirbranch || dirsize -Hb )) $( jobs_indicator )\$ ' %0 )
 
 case $TERM in
 	xterm*|rxvt*|putty*|screen)
