@@ -135,7 +135,7 @@ jobs_indicator() {
 	echo $n+
 }
 
-PS1=$( escseq '[' %36 '\t' %0 '] ' %1 '\h ' %1 %33 '\w' %1 ' ($( dirbranch || dirsize -Hb )) $( jobs_indicator )\$ ' %0 )
+PS1=$( escseq '[' %36 '\t' %0 '] ' %1 '\h ' %1 %33 '\w' %1 ' ($( dirbranch || dirsize -Hb )) ' %1 %31 '$( jobs_indicator )' %1 '\$ ' %0 )
 
 case $TERM in
 	xterm*|rxvt*|putty*|screen)
