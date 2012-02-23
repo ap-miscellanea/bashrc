@@ -239,10 +239,11 @@ unset MAIL MAILCHECK MAILPATH
 
 unset CDPATH
 
-while : ; do
-	case $BASH_VERSION in 1.*) break ; esac
-
-	shopt -s \
+case "$BASH_VERSION" in # each branch falls through
+	4.*) ;&
+	3.*) shopt -s autocd checkjobs globstar ;&
+	2.*) HISTCONTROL=erasedups ;&
+	1.*) shopt -s \
 		checkhash \
 		checkwinsize \
 		cmdhist \
@@ -251,20 +252,8 @@ while : ; do
 		histverify \
 		no_empty_cmd_completion \
 		xpg_echo
-
-	case $BASH_VERSION in 2.*) break ; esac
-
-	HISTCONTROL=erasedups
-
-	case $BASH_VERSION in 3.*) break ; esac
-
-	shopt -s \
-		autocd \
-		checkjobs \
-		globstar
-
-	break
-done
+		;;
+esac
 
 return <<'__END__'
 
