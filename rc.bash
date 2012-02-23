@@ -17,6 +17,9 @@ if [ $TERM != dumb ] ; then
 	exists dircolors && eval $( TERM=vt100 dircolors )
 fi
 
+# clean up all X .serverauth files in home dir except the latest
+ls -1t .serverauth.* | tail +2 | xargs -r rm
+
 eval $( perl -x ~/.bashrc )
 
 export LANG=C
@@ -270,15 +273,6 @@ use strict;
 sub env   { grep length, split /:/, $ENV{$_[0]} }
 sub shquo { map { s/'/'\''/g; "'$_'" } my @c = @_ }
 sub uniq  { my %seen; grep { !$seen{$_}++ } @_ }
-
-## clean up: delete all X .serverauth files in home dir except the latest
-chdir or die;
-unlink do {
-	my @file = <.serverauth.*>;
-	@file = map $$_[0], sort { $a->[1] <=> $b->[1] } map [ $_, (stat $_)[9] ], @file;
-	pop @file;
-	@file;
-};
 
 ## drop empty, dupe and current-dir components from $PATH and prepend $HOME/bin et al
 my @p = grep !/\A\.?\z/, env 'PATH';
