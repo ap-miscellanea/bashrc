@@ -221,9 +221,6 @@ else
 	alias ls='/bin/ls -F -b -G'
 fi
 
-# try to use native GVIM on Windows
-for gvim in /c/Programme/Vim/vim*/gvim.exe ; do [ -x "$gvim" ] && alias gvim="$gvim" ; done
-
 exists perldoc-complete && complete -C perldoc-complete -o nospace -o default pod
 
 if ! running_on_cygwin ; then
