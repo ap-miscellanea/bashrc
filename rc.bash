@@ -58,6 +58,8 @@ export ZIPOPT=-9
 export GREP_OPTIONS='--directories=skip --binary-files=without-match'
 export RSYNC_RSH=ssh
 export PERL_CPANM_OPT=--no-man-pages
+export HARNESS_OPTIONS=j9 # FIXME
+export TEST_JOBS=9 # FIXME
 
 case ${HOSTNAME%%.*} in
 	klangraum)
