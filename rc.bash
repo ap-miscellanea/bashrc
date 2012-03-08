@@ -225,7 +225,7 @@ for gvim in /c/Programme/Vim/vim*/gvim.exe ; do [ -x "$gvim" ] && alias gvim="$g
 exists perldoc-complete && complete -C perldoc-complete -o nospace -o default pod
 
 if ! running_on_cygwin ; then
-	if interactive_shell ; then bind -x '"\C-l": clear' ; fi
+	if interactive_shell ; then bind -x '"\C-l": reset' ; fi
 fi
 
 HISTIGNORE='l[sla]:[bf]g'
