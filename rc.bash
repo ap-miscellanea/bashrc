@@ -14,7 +14,7 @@ running_on_cygwin && TERM=cygwin
 if [ $TERM != dumb ] ; then
 	exists stty      && stty kill undef
 	exists setterm   && setterm -blength 0
-	exists dircolors && eval $( TERM=vt100 dircolors )
+	exists dircolors && eval $( TERM=vt100 dircolors -b )
 fi
 
 # clean up all X .serverauth files in home dir except the latest
