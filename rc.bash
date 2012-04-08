@@ -224,7 +224,10 @@ fi
 exists perldoc-complete && complete -C perldoc-complete -o nospace -o default pod
 
 if ! running_on_cygwin ; then
-	if interactive_shell ; then bind -x '"\C-l": reset' ; fi
+	if interactive_shell ; then
+		bind -x '"\C-l": clear'
+		bind -x '"\C-\M-l": reset'
+	fi
 fi
 
 HISTIGNORE='l[sla]:[bf]g'
