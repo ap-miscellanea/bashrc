@@ -70,7 +70,7 @@ case ${HOSTNAME%%.*} in
 		#export http_proxy=http://localhost:8080
 		export no_proxy=127.0.0.1,192.168.0.96,plasmasturm.org,klangraum.dyndns.org
 		export TEXINPUTS=".:$HOME/share/tex/currvita/:$HOME/share/tex/rechnung310/:"
-		export PERL_CPANM_OPT="$PERL_CPANM_OPT --mirror-only --mirror $HOME/share/minicpan"
+		export PERL_CPANM_OPT="$PERL_CPANM_OPT --mirror-only --mirror /home/www/cpan"
 		;;
 	plurisight)
 		export PATH=/opt/git/bin:$PATH
