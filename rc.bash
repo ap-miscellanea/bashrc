@@ -72,6 +72,13 @@ case ${HOSTNAME%%.*} in
 		export TEXINPUTS=".:$HOME/share/tex/currvita/:$HOME/share/tex/rechnung310/:"
 		export PERL_CPANM_OPT="$PERL_CPANM_OPT --mirror-only --mirror /home/www/cpan"
 		;;
+	fernweh)
+		export CFLAGS='-O2 -march=native -mtune=native -pipe -fomit-frame-pointer'
+		export CPPFLAGS=$CFLAGS
+		export CXXFLAGS=$CFLAGS
+		export MAKEFLAGS=-j5
+		export PERL_CPANM_OPT="$PERL_CPANM_OPT --mirror-only --mirror /home/www/cpan"
+		;;
 	plurisight)
 		export PATH=/opt/git/bin:$PATH
 		;;
