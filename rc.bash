@@ -150,7 +150,7 @@ jobs_indicator() {
 PS1=$( escseq '[' %36 '\t' %0 '] ' %1 '\h ' %1 %33 '\w' %1 ' ($( dirbranch || dirsize -Hb )) ' %1 %31 '$( jobs_indicator )' %1 '\$ ' %0 )
 
 case $TERM in
-	xterm*|rxvt*|putty*|screen)
+	xterm*|rxvt*|putty*|screen*)
 		prompt_termtitle() {
 			case "$PWD" in
 				"$HOME") p=\~         ;;
