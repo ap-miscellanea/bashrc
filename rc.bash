@@ -141,14 +141,6 @@ fi
 
 exists dirsize || dirsize() { echo '?' ; }
 
-jobs_indicator() {
-	local n=$( jobs | wc -l )
-	(( n == 0 )) && return
-	echo $n+
-}
-
-PS1=$( escseq '[' %36 '\t' %0 '] ' %1 '\h ' %1 %33 '\w' %1 ' ($( dirbranch || dirsize -Hb )) ' %1 %31 '$( jobs_indicator )' %1 '\$ ' %0 )
-
 case $TERM in
 	xterm*|rxvt*|putty*|screen*)
 		prompt_termtitle() {
@@ -158,9 +150,20 @@ case $TERM in
 				*)       p=${PWD##*/} ;;
 			esac
 			printf '\e]0;%s\007' "$USER@${HOSTNAME%%.*} : $p"
-		}
-		PROMPT_COMMAND=prompt_termtitle ;;
+		} ;;
+	*) prompt_termtitle() { return ; } ;;
 esac
+
+prompt_command() {
+	prompt_termtitle
+
+	local n=$( jobs | wc -l )
+	(( n > 0 )) && JOBS_INDICATOR="$n+"
+
+	DIRINFO=$( dirbranch || dirsize -Hb )
+}
+PROMPT_COMMAND=prompt_command
+PS1=$( escseq '[' %36 '\t' %0 '] ' %1 '\h ' %1 %33 '\w' %1 ' ($DIRINFO) ' %1 %31 '$JOBS_INDICATOR' %1 '\$ ' %0 )
 
 # cygwin hack to get initial $PWD reformatted properly
 running_on_cygwin &&  cd "$PWD"
