@@ -266,7 +266,7 @@ while (( ++i <= ${BASH_VERSION%%.*} )) ; do
 			xpg_echo
 			;;
 		2) HISTCONTROL=erasedups ;;
-		3) shopt -s autocd checkjobs globstar ;;
+		4) shopt -s autocd checkjobs globstar ;;
 	esac
 done
 unset i
