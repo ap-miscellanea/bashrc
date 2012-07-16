@@ -157,6 +157,7 @@ esac
 prompt_command() {
 	prompt_termtitle
 
+	JOBS_INDICATOR=
 	local n=$( jobs | wc -l )
 	(( n > 0 )) && JOBS_INDICATOR="$n+"
 
