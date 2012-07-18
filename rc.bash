@@ -18,7 +18,7 @@ if [ $TERM != dumb ] ; then
 fi
 
 # clean up all X .serverauth files in home dir except the latest
-( shopt -s nullglob ; f=(~/.serverauth.*) ; [ "$f" ] && ls -1t "${f[@]}" | tail +2 | xargs -r rm )
+( shopt -s nullglob ; f=(~/.serverauth.*) ; [ "$f" ] && ls -1t "${f[@]}" | tail +2 | { xargs -r rm 2>/dev/null || xargs rm ; } )
 
 eval $( perl -x ~/.bashrc )
 
