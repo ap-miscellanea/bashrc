@@ -182,6 +182,8 @@ alias -- \
 	ddiff='LC_ALL=C TZ=UTC0 command diff -urd --unidirectional-new-file' \
 	ll='ls -l' \
 	la='ll -A' \
+	mcdtmp='cd `mktemp -d $PWD/x.XXXXXX`' \
+	rmcd..='rmdir $PWD && cd ..' \
 	man='LC_CTYPE=C man' \
 	mvi='mv -i' \
 	pod=perldoc \
