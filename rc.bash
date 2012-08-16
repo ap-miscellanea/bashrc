@@ -97,11 +97,10 @@ esac
 [ -d ~/perl5/perlbrew ] && source ~/perl5/perlbrew/etc/perlbrew-completion.bash
 
 if exists git ; then
-	for f in /usr/doc/git-*/contrib/completion/git-completion.bash ; do
-		if [ -e "$f" ] ; then
-			source "$f"
-			break
-		fi
+	for f in /usr/{doc,local}/git{,-*}/contrib/completion/git-completion.bash ; do
+		[ -e "$f" ] || continue
+		source "$f"
+		break
 	done
 fi
 
