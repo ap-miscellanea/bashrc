@@ -189,6 +189,11 @@ alias -- \
 	ssh4='ssh -c arcfour' \
 	scp4='scp -c arcfour' \
 
+case ${HOSTNAME%%.*} in
+	heliopause|klangraum) alias f='ssh fernweh' ;;
+	heliopause|fernweh) alias k='ssh klangraum' ;;
+esac
+
 if exists ionice ; then
 	case ${HOSTNAME%%.*} in
 		ksm) ;;
