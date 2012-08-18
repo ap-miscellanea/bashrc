@@ -94,15 +94,21 @@ esac
 # SHELL CUSTOMISATION
 # ===================
 
-[ -d ~/perl5/perlbrew ] && source ~/perl5/perlbrew/etc/perlbrew-completion.bash
+try_source () {
+	[ -f "$1" ] || return 1
+	source "$@"
+	return 0
+}
+
+try_source /usr/local/Library/Contributions/brew_bash_completion.sh
 
 if exists git ; then
 	for f in /usr/{doc,local}/git{,-*}/contrib/completion/git-completion.bash ; do
-		[ -e "$f" ] || continue
-		source "$f"
-		break
+		try_source "$f" && break
 	done
 fi
+
+unset -f try_source
 
 escseq() {
 	local ESC
