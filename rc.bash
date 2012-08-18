@@ -100,6 +100,8 @@ try_source () {
 	return 0
 }
 
+try_source ~/perl5/perlbrew/etc/perlbrew-completion.bash
+
 try_source /usr/local/Library/Contributions/brew_bash_completion.sh
 
 if exists git ; then
