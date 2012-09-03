@@ -9,6 +9,8 @@ interactive_shell () { case "$-" in *i*) return 0 ;; *) return 1 ;; esac ; }
 
 running_on_cygwin && TERM=cygwin
 
+case ":$PATH:" in *:$HOME/bin:*) ;; *) PATH=$HOME/bin:$PATH ;; esac
+
 [ -d ~/perl5/perlbrew ] && source ~/perl5/perlbrew/etc/bashrc
 
 if [ $TERM != dumb ] ; then
