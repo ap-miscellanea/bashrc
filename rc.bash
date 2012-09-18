@@ -218,11 +218,8 @@ if exists git ; then
 		[ "`git rev-parse --is-inside-work-tree 2>&-`" = true ] || set -- --no-index ${1+"$@"}
 		git grep -E ${1+"$@"}
 	}
-	alias -- \
-		ggv='gg -O${DISPLAY:+g}vim' \
-		diff='git diff --no-index' \
-		gh='cd `git rev-parse --show-cdup`' \
-
+	alias ggv='gg -O${DISPLAY:+g}vim'
+	alias diff='git diff --no-index'
 fi
 
 strftime_format=$'\e[38;5;246m%d.%b’%y \e[38;5;252m%T\e[0m'
