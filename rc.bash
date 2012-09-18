@@ -218,7 +218,7 @@ if exists git ; then
 		[ "`git rev-parse --is-inside-work-tree 2>&-`" = true ] || set -- --no-index ${1+"$@"}
 		git grep -E ${1+"$@"}
 	}
-	alias ggv='gg -O${DISPLAY:+g}vim'
+	alias ggv='gg -O${DISPLAY:+g}vim' ; exists mvim && alias ggv='gg -Omvim'
 	alias diff='git diff --no-index'
 fi
 
