@@ -59,15 +59,15 @@ export BROWSER=google-chrome
 export ZIPOPT=-9
 export GREP_OPTIONS='--directories=skip --binary-files=without-match'
 export RSYNC_RSH=ssh
+export CFLAGS='-O2 -march=native -mtune=native -pipe -fomit-frame-pointer'
+export CPPFLAGS=$CFLAGS
+export CXXFLAGS=$CFLAGS
 export PERL_CPANM_OPT=--no-man-pages
 export HARNESS_OPTIONS=j9 # FIXME
-export TEST_JOBS=9 # FIXME
+export TEST_JOBS=9        # FIXME
 
 case ${HOSTNAME%%.*} in
 	klangraum)
-		export CFLAGS='-O2 -march=native -mtune=native -pipe -fomit-frame-pointer'
-		export CPPFLAGS=$CFLAGS
-		export CXXFLAGS=$CFLAGS
 		export MAKEFLAGS=-j12
 		#export http_proxy=http://localhost:8080
 		export no_proxy=127.0.0.1,192.168.0.96,plasmasturm.org,klangraum.dyndns.org
@@ -75,20 +75,14 @@ case ${HOSTNAME%%.*} in
 		export PERL_CPANM_OPT="$PERL_CPANM_OPT --mirror-only --mirror /home/www/cpan"
 		;;
 	fernweh)
-		export CFLAGS='-O2 -march=native -mtune=native -pipe -fomit-frame-pointer'
-		export CPPFLAGS=$CFLAGS
-		export CXXFLAGS=$CFLAGS
 		export MAKEFLAGS=-j5
 		export PERL_CPANM_OPT="$PERL_CPANM_OPT --mirror-only --mirror /home/www/cpan"
 		;;
+	heliopause)
+		export MAKEFLAGS=-j5
+		;;
 	plurisight)
 		export PATH=/opt/git/bin:$PATH
-		;;
-	brixton)
-		export MODULEBUILDRC="/home/ap/perl5/.modulebuildrc"
-		export PERL_MM_OPT="INSTALL_BASE=/home/ap/perl5"
-		export PERL5LIB="/home/ap/perl5/lib/perl5:/home/ap/perl5/lib/perl5/i486-linux-gnu-thread-multi"
-		export PATH="/home/ap/perl5/bin:$PATH"
 		;;
 esac
 
