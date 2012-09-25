@@ -192,6 +192,7 @@ alias -- \
 	pod=perldoc \
 	ssh4='ssh -c arcfour' \
 	scp4='scp -c arcfour' \
+	singlecore='env HARNESS_OPTIONS= TEST_JOBS= MAKEFLAGS=' \
 
 case ${HOSTNAME%%.*} in heliopause|klangraum) alias f='ssh fernweh' ;; esac
 case ${HOSTNAME%%.*} in heliopause|fernweh) alias k='ssh klangraum' ;; esac
