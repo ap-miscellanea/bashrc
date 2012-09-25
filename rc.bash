@@ -220,6 +220,7 @@ if exists git ; then
 	}
 	alias ggv='gg -O${DISPLAY:+g}vim' ; exists mvim && alias ggv='gg -Omvim'
 	alias diff='git diff --no-index'
+	alias ..g='cd `git rev-parse --show-cdup`'
 fi
 
 strftime_format=$'\e[38;5;246m%d.%b’%y \e[38;5;252m%T\e[0m'
