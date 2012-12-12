@@ -80,6 +80,7 @@ case ${HOSTNAME%%.*} in
 		;;
 	heliopause)
 		export MAKEFLAGS=-j5
+		export PERL_CPANM_OPT="$PERL_CPANM_OPT --mirror-only --mirror /Users/Shared/CPAN"
 		;;
 	plurisight)
 		export PATH=/opt/git/bin:$PATH
