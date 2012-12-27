@@ -102,9 +102,23 @@ try_source ~/perl5/perlbrew/etc/perlbrew-completion.bash
 try_source /usr/local/Library/Contributions/brew_bash_completion.sh
 
 if exists git ; then
-	for f in /usr/{doc,local}/git{,-*}/contrib/completion/git-completion.bash ; do
+	shopt -s nullglob # optimisation
+	candidates=(
+		/usr/local/Cellar/git/*/etc/bash_completion.d/git-completion.bash
+		/usr/{doc,local}/git{,-*}/contrib/completion/git-completion.bash
+	)
+	for f in "${candidates[@]}" ; do
 		try_source "$f" && break
 	done
+	candidates=(
+		/usr/local/Cellar/git/*/etc/bash_completion.d/git-prompt.sh
+		/usr/{doc,local}/git{,-*}/contrib/completion/git-prompt.sh
+	)
+	for f in "${candidates[@]}" ; do
+		try_source "$f" && break
+	done
+	unset candidates
+	shopt -u nullglob
 fi
 
 unset -f try_source
