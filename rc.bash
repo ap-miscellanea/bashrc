@@ -207,6 +207,7 @@ alias -- \
 	pod=perldoc \
 	ssh4='ssh -c arcfour' \
 	scp4='scp -c arcfour' \
+	rmv='rsync --remove-source-files' \
 	singlecore='env HARNESS_OPTIONS= TEST_JOBS= MAKEFLAGS=' \
 
 case ${HOSTNAME%%.*} in heliopause|klangraum) alias @f='ssh fernweh' ;; esac
