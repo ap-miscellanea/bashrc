@@ -318,4 +318,9 @@ if ( my @c = env 'LS_COLORS' ) {
 
 printf "MANPATH=%s\n", shquo join ':', uniq env 'MANPATH';
 
+if ( eval 'require Pod::Perldoc::ToTerm' ) {
+	printf "export PERLDOC=%s\n", shquo '-o term';
+	printf "export PERLDOC_PAGER=%s\n", shquo 'less -R';
+}
+
 __END__
