@@ -234,7 +234,12 @@ if exists git ; then
 	alias ..g='cd `git rev-parse --show-cdup`'
 fi
 
-strftime_format=$'\e[38;5;246m%d.%b’%y \e[38;5;252m%T\e[0m'
+case $TERM in
+	*-256color)
+		strftime_format=$'\e[38;5;246m%d.%b’%y \e[38;5;252m%T\e[0m' ;;
+	*)
+		strftime_format='%d.%b'\'\\\'\''%y %T' ;;
+esac
 
 # GNU ls or BSD?
 if ls --version &> /dev/null ; then
@@ -246,7 +251,7 @@ if ls --version &> /dev/null ; then
 	if ls --block-size=\'1 --version &> /dev/null ; then
 		ls_alias="$ls_alias --block-size="\\\''1'
 	fi
-	if ls --time-style=iso --version &> /dev/null ; then
+	if [ "$strftime_format" ] && ls --time-style=iso --version &> /dev/null ; then
 		ls_alias="$ls_alias --time-style=+'$strftime_format'"
 	fi
 	alias ls="$ls_alias"
@@ -267,7 +272,9 @@ fi
 HISTIGNORE='l[sla]:[bf]g'
 HISTSIZE=200000
 HISTFILESIZE=${HISTSIZE}
-HISTTIMEFORMAT="$strftime_format  "
+if [ "$strftime_format" ] ; then
+	HISTTIMEFORMAT="$strftime_format  "
+fi
 
 FCEDIT=vim
 
@@ -309,7 +316,7 @@ printf "PATH=%s\n", shquo join ':', uniq "$ENV{HOME}/bin", qw( /sbin /usr/sbin )
 ## fix up some dircolors
 if ( my @c = env 'LS_COLORS' ) {
 	my %c = map { split /=/, $_, 2 } @c;
-	$c{'di'} = '01;38;5;32';
+	$c{'di'} = '01;38;5;32' if $ENV{'TERM'} =~ /-256color\z/;
 	$c{'*.m4a'} ||= $c{'*.wav'};
 	$c{'*.txz'} ||= $c{'*.tgz'};
 	$c{ '*.xz'} ||= $c{ '*.gz'};
