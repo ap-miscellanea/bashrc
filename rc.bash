@@ -196,7 +196,6 @@ alias -- \
 	...='cd ../..' \
 	....='cd ../../..' \
 	.....='cd ../../../..' \
-	cal='cal -m' \
 	ddiff='LC_ALL=C TZ=UTC0 command diff -urd --unidirectional-new-file' \
 	ll='ls -l' \
 	la='ll -A' \
