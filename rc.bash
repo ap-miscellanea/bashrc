@@ -56,6 +56,8 @@ export LESS_TERMCAP_me=$'\E[0m'
 
 export BROWSER=google-chrome
 
+export MOSH_TITLE_NOPREFIX=1
+
 export ZIPOPT=-9
 export GREP_OPTIONS='--directories=skip --binary-files=without-match'
 export RSYNC_RSH=ssh
