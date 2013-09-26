@@ -193,6 +193,7 @@ mcd()  { mkdir -p "$1" ; cd "$1" ; }
 
 unalias -a
 alias -- \
+	@=ssh \
 	-='popd 2>/dev/null || cd -' \
 	..='cd ..' \
 	...='cd ../..' \
@@ -210,9 +211,6 @@ alias -- \
 	scp4='scp -c arcfour' \
 	rmv='rsync --remove-source-files' \
 	singlecore='env HARNESS_OPTIONS= TEST_JOBS= MAKEFLAGS=' \
-
-case ${HOSTNAME%%.*} in heliopause|klangraum) alias @f='ssh fernweh' ;; esac
-case ${HOSTNAME%%.*} in heliopause|fernweh) alias @k='ssh klangraum' ;; esac
 
 if exists ionice ; then
 	case ${HOSTNAME%%.*} in
