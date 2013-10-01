@@ -58,6 +58,8 @@ export BROWSER=google-chrome
 
 export MOSH_TITLE_NOPREFIX=1
 
+[ `uname` = Darwin ] && export COPYFILE_DISABLE=true
+
 export ZIPOPT=-9
 export GREP_OPTIONS='--directories=skip --binary-files=without-match'
 export RSYNC_RSH=ssh
