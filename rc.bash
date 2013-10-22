@@ -184,7 +184,6 @@ mcd()  { mkdir -p "$1" ; cd "$1" ; }
 
 unalias -a
 alias -- \
-	@=ssh \
 	-='popd 2>/dev/null || cd -' \
 	..='cd ..' \
 	...='cd ../..' \
