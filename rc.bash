@@ -70,26 +70,14 @@ export PERL_CPANM_OPT=--no-man-pages
 export HARNESS_OPTIONS=j9 # FIXME
 export TEST_JOBS=9        # FIXME
 
-case ${HOSTNAME%%.*} in
-	klangraum)
-		export MAKEFLAGS=-j12
-		#export http_proxy=http://localhost:8080
-		export no_proxy=127.0.0.1,192.168.0.96,plasmasturm.org,klangraum.dyndns.org
-		export TEXINPUTS=".:$HOME/share/tex/currvita/:$HOME/share/tex/rechnung310/:"
-		export PERL_CPANM_OPT="$PERL_CPANM_OPT --mirror-only --mirror /home/www/cpan"
-		;;
-	fernweh)
-		export MAKEFLAGS=-j5
-		export PERL_CPANM_OPT="$PERL_CPANM_OPT --mirror-only --mirror /home/www/cpan"
-		;;
-	heliopause)
-		export MAKEFLAGS=-j5
-		export PERL_CPANM_OPT="$PERL_CPANM_OPT --mirror-only --mirror /Users/Shared/CPAN"
-		;;
-	plurisight)
-		export PATH=/opt/git/bin:$PATH
-		;;
-esac
+for d in /Users/Shared/CPAN /home/www/cpan ; do
+	if [ -d "$d" ] ; then
+		export PERL_CPANM_OPT="$PERL_CPANM_OPT --mirror-only --mirror $d"
+		break
+	fi
+done
+
+[ -r ~/.bashrc.local ] && source ~/.bashrc.local
 
 
 # SHELL CUSTOMISATION
