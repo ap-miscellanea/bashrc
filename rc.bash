@@ -7,6 +7,11 @@ interactive_shell () { case "$-" in *i*) return 0 ;; *) return 1 ;; esac ; }
 # GENERIC ENVIRONMENT STUFF
 # =========================
 
+export LANG=C
+export LC_ALL=
+export LC_COLLATE=C
+export LC_CTYPE=C
+
 running_on_cygwin && TERM=cygwin
 
 case ":$PATH:" in *:$HOME/bin:*) ;; *) PATH=$HOME/bin:$PATH ;; esac
@@ -23,11 +28,6 @@ fi
 ( shopt -s nullglob ; f=(~/.serverauth.*) ; [ "$f" ] && ls -1t "${f[@]}" | tail +2 | { xargs -r rm 2>/dev/null || xargs rm ; } )
 
 eval $( perl -x ~/.bashrc )
-
-export LANG=C
-export LC_ALL=
-export LC_COLLATE=C
-export LC_CTYPE=C
 
 if interactive_shell && exists locale ; then
 	L=( $( locale -a ) )
