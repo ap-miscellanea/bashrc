@@ -98,6 +98,7 @@ if exists git ; then
 	candidates=(
 		/usr/local/Cellar/git/*/etc/bash_completion.d/git-completion.bash
 		/usr/{doc,local}/git{,-*}/contrib/completion/git-completion.bash
+		/etc/bash_completion.d/git
 	)
 	for f in "${candidates[@]}" ; do
 		try_source "$f" && break
