@@ -214,6 +214,7 @@ if exists ionice ; then
 fi
 
 if exists git ; then
+	alias s='git st'
 	gg() {
 		[ "`git rev-parse --is-inside-work-tree 2>&-`" = true ] || set -- --no-index ${1+"$@"}
 		git grep -E ${1+"$@"}
