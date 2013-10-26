@@ -183,32 +183,31 @@ running_on_cygwin &&  cd "$PWD"
 mcd()  { mkdir -p "$1" ; cd "$1" ; }
 
 unalias -a
-alias -- \
-	-='popd 2>/dev/null || cd -' \
-	..='cd ..' \
-	...='cd ../..' \
-	....='cd ../../..' \
-	.....='cd ../../../..' \
-	ddiff='LC_ALL=C TZ=UTC0 command diff -urd --unidirectional-new-file' \
-	ll='ls -l' \
-	la='ll -A' \
-	mcdtmp='cd `mktemp -d $PWD/x.XXXXXX`' \
-	rmcd..='rmdir $PWD && cd ..' \
-	man='LC_CTYPE=C man' \
-	mvi='mv -i' \
-	pod=perldoc \
-	ssh4='ssh -c arcfour' \
-	scp4='scp -c arcfour' \
-	rmv='rsync --remove-source-files' \
-	singlecore='env HARNESS_OPTIONS= TEST_JOBS= MAKEFLAGS=' \
+alias -- -='popd 2>/dev/null || cd -'
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
+alias ddiff='LC_ALL=C TZ=UTC0 command diff -urd --unidirectional-new-file'
+alias ll='ls -l'
+alias la='ll -A'
+alias mcdtmp='cd `mktemp -d "$PWD"/x.XXXXXX`'
+alias rmcd..='rmdir "$PWD" && cd ..'
+alias man='LC_CTYPE=C man'
+alias mvi='mv -i'
+alias pod=perldoc
+alias ssh4='ssh -c arcfour'
+alias scp4='scp -c arcfour'
+alias rmv='rsync --remove-source-files'
+alias singlecore='env HARNESS_OPTIONS= TEST_JOBS= MAKEFLAGS='
 
 if exists ionice ; then
 	case ${HOSTNAME%%.*} in
 		ksm) ;;
-		*) alias -- \
-			cp='ionice -c 3 cp' \
-			mv='ionice -c 3 mv' \
-			rsync='ionice -c 3 rsync' \
+		*)
+			alias cp='ionice -c 3 cp'
+			alias mv='ionice -c 3 mv'
+			alias rsync='ionice -c 3 rsync'
 			;;
 	esac
 fi
