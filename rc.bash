@@ -200,6 +200,7 @@ alias ssh4='ssh -c arcfour'
 alias scp4='scp -c arcfour'
 alias rmv='rsync --remove-source-files'
 alias singlecore='env HARNESS_OPTIONS= TEST_JOBS= MAKEFLAGS='
+alias m=mutt
 
 if exists ionice ; then
 	case ${HOSTNAME%%.*} in
