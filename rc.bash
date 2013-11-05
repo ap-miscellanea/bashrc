@@ -298,10 +298,11 @@ use strict;
 sub env   { grep length, split /:/, $ENV{$_[0]} }
 sub shquo { map { s/'/'\''/g; "'$_'" } my @c = @_ }
 sub uniq  { my %seen; grep { !$seen{$_}++ } @_ }
+sub export { my $vn = shift; printf "export %s=%s\n", $vn, shquo join ':', @_ }
 
 ## drop empty, dupe and current-dir components from $PATH and prepend $HOME/bin et al
 my @p = grep !/\A\.?\z/, env 'PATH';
-printf "PATH=%s\n", shquo join ':', uniq "$ENV{HOME}/bin", qw( /sbin /usr/sbin ), @p;
+export PATH => uniq "$ENV{HOME}/bin", qw( /sbin /usr/sbin ), @p;
 
 ## fix up some dircolors
 if ( my @c = env 'LS_COLORS' ) {
@@ -310,14 +311,14 @@ if ( my @c = env 'LS_COLORS' ) {
 	$c{'*.m4a'} ||= $c{'*.wav'};
 	$c{'*.txz'} ||= $c{'*.tgz'};
 	$c{ '*.xz'} ||= $c{ '*.gz'};
-	printf "LS_COLORS=%s\n", shquo join ':', map { join '=', $_, $c{$_} } sort keys %c;
+	export LS_COLORS => map { join '=', $_, $c{$_} } sort keys %c;
 }
 
-printf "MANPATH=%s\n", shquo join ':', uniq env 'MANPATH';
+export MANPATH => uniq env 'MANPATH';
 
 if ( eval 'require Pod::Perldoc::ToTerm' ) {
-	printf "export PERLDOC=%s\n", shquo '-o term';
-	printf "export PERLDOC_PAGER=%s\n", shquo 'less -R';
+	export PERLDOC       => '-o term';
+	export PERLDOC_PAGER => 'less -R';
 }
 
 __END__
