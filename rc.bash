@@ -63,7 +63,7 @@ export MOSH_TITLE_NOPREFIX=1
 export ZIPOPT=-9
 export GREP_OPTIONS='--directories=skip --binary-files=without-match'
 export RSYNC_RSH=ssh
-export CFLAGS='-O2 -march=native -mtune=native -pipe -fomit-frame-pointer'
+export CFLAGS='-Os -march=native -pipe -fomit-frame-pointer'
 export CPPFLAGS=$CFLAGS
 export CXXFLAGS=$CFLAGS
 export PERL_CPANM_OPT=--no-man-pages
