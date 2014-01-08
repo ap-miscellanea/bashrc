@@ -194,7 +194,7 @@ alias la='ll -A'
 alias mcdtmp='cd `mktemp -d "$PWD"/x.XXXXXX`'
 alias rmcd..='rmdir "$PWD" && cd ..'
 alias man='LC_CTYPE=C man'
-alias mvi='mv -i'
+alias m='mv -vi'
 alias pod=perldoc
 alias ssh4='ssh -c arcfour'
 alias scp4='scp -c arcfour'
