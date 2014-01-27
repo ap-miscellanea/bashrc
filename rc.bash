@@ -55,6 +55,7 @@ export LESS_TERMCAP_ue=$'\E[22;23m'
 export LESS_TERMCAP_me=$'\E[0m'
 
 export BROWSER=google-chrome
+exists open && BROWSER=open
 
 export MOSH_TITLE_NOPREFIX=1
 
