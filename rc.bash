@@ -97,16 +97,16 @@ try_source /usr/local/Library/Contributions/brew_bash_completion.sh
 if exists git ; then
 	shopt -s nullglob # optimisation
 	candidates=(
+		/usr/{local{,/share},doc}/git{,-*}/contrib/completion/git-completion.bash
 		/usr/local/Cellar/git/*/etc/bash_completion.d/git-completion.bash
-		/usr/{doc,local}/git{,-*}/contrib/completion/git-completion.bash
 		/etc/bash_completion.d/git
 	)
 	for f in "${candidates[@]}" ; do
 		try_source "$f" && break
 	done
 	candidates=(
+		/usr/{local{,/share},doc}/git{,-*}/contrib/completion/git-prompt.sh
 		/usr/local/Cellar/git/*/etc/bash_completion.d/git-prompt.sh
-		/usr/{doc,local}/git{,-*}/contrib/completion/git-prompt.sh
 	)
 	for f in "${candidates[@]}" ; do
 		try_source "$f" && break
