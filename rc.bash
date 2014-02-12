@@ -71,51 +71,21 @@ export PERL_CPANM_OPT=--no-man-pages
 export HARNESS_OPTIONS=j9 # FIXME
 export TEST_JOBS=9        # FIXME
 
-for d in /Users/Shared/CPAN /home/www/cpan ; do
-	if [ -d "$d" ] ; then
-		export PERL_CPANM_OPT="$PERL_CPANM_OPT --mirror-only --mirror $d"
-		break
-	fi
-done
-
-[ -r ~/.bashrc.local ] && source ~/.bashrc.local
+[ -d ~/.minicpan ] && export PERL_CPANM_OPT="$PERL_CPANM_OPT --mirror-only --mirror `printf '%q' ~/.minicpan`"
 
 
 # SHELL CUSTOMISATION
 # ===================
 
-try_source () {
-	[ -f "$1" ] || return 1
-	source "$@"
-	return 0
-}
-
-try_source ~/perl5/perlbrew/etc/perlbrew-completion.bash
-
-try_source /usr/local/Library/Contributions/brew_bash_completion.sh
-
-if exists git ; then
-	shopt -s nullglob # optimisation
-	candidates=(
-		/usr/{local{,/share},doc}/git{,-*}/contrib/completion/git-completion.bash
-		/usr/local/Cellar/git/*/etc/bash_completion.d/git-completion.bash
-		/etc/bash_completion.d/git
-	)
-	for f in "${candidates[@]}" ; do
-		try_source "$f" && break
-	done
-	candidates=(
-		/usr/{local{,/share},doc}/git{,-*}/contrib/completion/git-prompt.sh
-		/usr/local/Cellar/git/*/etc/bash_completion.d/git-prompt.sh
-	)
-	for f in "${candidates[@]}" ; do
-		try_source "$f" && break
-	done
-	unset candidates
-	shopt -u nullglob
-fi
-
-unset -f try_source
+for f in \
+	~/.bashrc.local \
+	~/perl5/perlbrew/etc/perlbrew-completion.bash \
+	/usr/local/Library/Contributions/brew_bash_completion.sh \
+	~/.git-completion \
+	~/.git-prompt \
+; do
+	[ -r "$f" ] && source "$f"
+done
 
 escseq() {
 	local ESC
