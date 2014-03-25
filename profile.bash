@@ -8,7 +8,7 @@ if [ -x /usr/bin/ssh-agent -a -z "$SSH_AUTH_SOCK" ] ; then
 fi
 
 if [ -x /usr/bin/ssh-add ] && ! /usr/bin/ssh-add -l &> /dev/null ; then
-	/usr/bin/ssh-add
+	( cd ~/.ssh && /usr/bin/ssh-add {,*/}identity )
 fi
 
 [ -r ~/.bashrc ] && source ~/.bashrc
