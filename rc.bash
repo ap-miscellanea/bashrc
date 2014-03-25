@@ -18,7 +18,7 @@ case ":$PATH:" in *:$HOME/bin:*) ;; *) PATH=$HOME/bin:$PATH ;; esac
 
 [ -d ~/perl5/perlbrew ] && source ~/perl5/perlbrew/etc/bashrc
 
-if [ $TERM != dumb ] ; then
+if [ -t 0 ] ; then
 	exists stty      && stty kill undef
 	exists setterm   && setterm -blength 0
 	exists dircolors && eval $( TERM=vt100 dircolors -b )
