@@ -172,6 +172,8 @@ alias scp4='scp -c arcfour'
 alias rmv='rsync --remove-source-files'
 alias singlecore='env HARNESS_OPTIONS= TEST_JOBS= MAKEFLAGS='
 
+exists qlmanage && alias ql='qlmanage -p &>/dev/null'
+
 if exists ionice ; then
 	case ${HOSTNAME%%.*} in
 		ksm) ;;
