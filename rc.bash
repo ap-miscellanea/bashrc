@@ -221,6 +221,7 @@ else
 fi
 
 exists perldoc-complete && complete -C perldoc-complete -o nospace -o default pod
+exists     ssh-complete && complete -C     ssh-complete            -o default ssh
 
 if ! running_on_cygwin ; then
 	if interactive_shell ; then
