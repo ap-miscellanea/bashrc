@@ -68,7 +68,7 @@ export PERL_CPANM_OPT=--no-man-pages
 export HARNESS_OPTIONS=j9 # FIXME
 export TEST_JOBS=9        # FIXME
 
-[ -d ~/.minicpan ] && export PERL_CPANM_OPT="$PERL_CPANM_OPT --mirror-only --mirror `printf '%q' ~/.minicpan`"
+[ -d ~/.minicpan ] && export PERL_CPANM_OPT="$PERL_CPANM_OPT --mirror-only --mirror $HOME/.minicpan"
 
 
 # SHELL CUSTOMISATION
