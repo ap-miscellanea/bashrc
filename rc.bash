@@ -286,9 +286,11 @@ if ( my @c = env 'LS_COLORS' ) {
 
 export MANPATH => uniq env 'MANPATH';
 
-if ( eval 'require Pod::Perldoc::ToTerm' ) {
+for ( @INC ) {
+	next unless -e "$_/Pod/Perldoc/ToTerm.pm";
 	export PERLDOC       => '-o term';
 	export PERLDOC_PAGER => 'less -R';
+	last;
 }
 
 __END__
