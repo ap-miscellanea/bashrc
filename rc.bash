@@ -1,8 +1,8 @@
 #!/bin/bash
 
 exists() { [[ $( type -t "$1" ) == file ]] ; }
-running_on_cygwin () { [ "$MSYSTEM" = MINGW32 ] ; }
-interactive_shell () { case "$-" in *i*) return 0 ;; *) return 1 ;; esac ; }
+running_on_cygwin () { [[ $MSYSTEM = MINGW32 ]] ; }
+interactive_shell () { [[ $- == *i* ]] ; }
 
 # GENERIC ENVIRONMENT STUFF
 # =========================
@@ -14,7 +14,7 @@ export LC_CTYPE=C
 
 running_on_cygwin && TERM=cygwin
 
-case ":$PATH:" in *:$HOME/bin:*) ;; *) PATH=$HOME/bin:$PATH ;; esac
+[[ ":$PATH:" == *":$HOME/bin:"* ]] || PATH=$HOME/bin:$PATH
 
 [ -d ~/perl5/perlbrew ] && source ~/perl5/perlbrew/etc/bashrc
 
@@ -87,19 +87,18 @@ done
 escseq() {
 	local ESC
 	local fmt
-	case $TERM in
-		putty*) fmt='\e[%sm'     ;;
-		*)      fmt='\[\e[%sm\]' ;;
-	esac
+	if [[ $TERM == putty* ]]
+		then fmt='\e[%sm'
+		else fmt='\[\e[%sm\]'
+	fi
 	while [ "$*" ] ; do
-		case "$1" in
-			%*) ESC="$ESC;${1#%}" ;;
-			*)
-				[ "$ESC" ] && printf $fmt "$ESC"
-				printf '%s' "$1"
-				unset ESC
-				;;
-		esac
+		if [[ $1 == %* ]] ; then
+			ESC="$ESC;${1#%}"
+		else
+			[ "$ESC" ] && printf $fmt "$ESC"
+			printf '%s' "$1"
+			unset ESC
+		fi
 		shift
 	done
 	[ "$ESC" ] && printf $fmt "$ESC"
@@ -171,15 +170,10 @@ alias singlecore='env HARNESS_OPTIONS= TEST_JOBS= MAKEFLAGS='
 
 exists qlmanage && alias ql='qlmanage -p &>/dev/null'
 
-if exists ionice ; then
-	case ${HOSTNAME%%.*} in
-		ksm) ;;
-		*)
-			alias cp='ionice -c 3 cp'
-			alias mv='ionice -c 3 mv'
-			alias rsync='ionice -c 3 rsync'
-			;;
-	esac
+if exists ionice && ! [[ ${HOSTNAME%%.*} == ksm ]] ; then
+	alias cp='ionice -c 3 cp'
+	alias mv='ionice -c 3 mv'
+	alias rsync='ionice -c 3 rsync'
 fi
 
 if exists git ; then
@@ -193,12 +187,10 @@ if exists git ; then
 	alias ..g='cd `git rev-parse --show-cdup`'
 fi
 
-case $TERM in
-	*-256color)
-		strftime_format=$'\e[38;5;246m%d.%b’%y \e[38;5;252m%T\e[0m' ;;
-	*)
-		strftime_format='%d.%b'\'\\\'\''%y %T' ;;
-esac
+if [[ $TERM == *-256color ]]
+	then strftime_format=$'\e[38;5;246m%d.%b’%y \e[38;5;252m%T\e[0m'
+	else strftime_format='%d.%b'\'\\\'\''%y %T'
+fi
 
 # GNU ls or BSD?
 if ls --version &> /dev/null ; then
@@ -222,11 +214,9 @@ fi
 exists perldoc-complete && complete -C perldoc-complete -o nospace -o default pod
 exists     ssh-complete && complete -C     ssh-complete            -o default ssh
 
-if ! running_on_cygwin ; then
-	if interactive_shell ; then
-		bind -x '"\C-l": clear'
-		bind -x '"\C-\M-l": reset'
-	fi
+if interactive_shell && ! running_on_cygwin ; then
+	bind -x '"\C-l": clear'
+	bind -x '"\C-\M-l": reset'
 fi
 
 HISTIGNORE='l[sla]:[bf]g'
@@ -242,24 +232,13 @@ unset MAIL MAILCHECK MAILPATH
 
 unset CDPATH
 
-i=0
-while (( ++i <= ${BASH_VERSION%%.*} )) ; do
-	case $i in
-		1) shopt -s \
-			checkhash \
-			checkwinsize \
-			cmdhist \
-			extglob \
-			histappend \
-			histverify \
-			no_empty_cmd_completion \
-			xpg_echo
-			;;
-		2) HISTCONTROL=erasedups ;;
-		4) shopt -s autocd checkjobs globstar ;;
-	esac
-done
-unset i
+v=${BASH_VERSION%%.*}
+(( v >= 1 )) && shopt -s checkhash checkwinsize cmdhist \
+                         extglob histappend histverify \
+                         no_empty_cmd_completion xpg_echo
+(( v >= 2 )) && HISTCONTROL=erasedups
+(( v >= 4 )) && shopt -s autocd checkjobs globstar
+unset v
 
 return <<'__END__'
 
