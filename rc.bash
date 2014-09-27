@@ -1,6 +1,6 @@
 #!/bin/bash
 
-exists() { which "$@" &> /dev/null ; }
+exists() { [[ $( type -t "$1" ) == file ]] ; }
 running_on_cygwin () { [ "$MSYSTEM" = MINGW32 ] ; }
 interactive_shell () { case "$-" in *i*) return 0 ;; *) return 1 ;; esac ; }
 
