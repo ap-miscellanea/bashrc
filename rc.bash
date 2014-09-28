@@ -24,7 +24,37 @@ if [ -t 0 ] ; then
 	exists dircolors && eval $( TERM=vt100 dircolors -b )
 fi
 
-eval $( perl -x ~/.bashrc )
+eval $( perl -x ~/.bashrc ) <<'__END__'
+#!perl
+use strict;
+sub env   { grep length, split /:/, $ENV{$_[0]} }
+sub shquo { map { s/'/'\''/g; "'$_'" } my @c = @_ }
+sub uniq  { my %seen; grep { !$seen{$_}++ } @_ }
+sub export { my $vn = shift; printf "export %s=%s\n", $vn, shquo join ':', @_ }
+
+## drop empty, dupe and current-dir components from $PATH and prepend $HOME/bin et al
+my @p = grep !/\A\.?\z/, env 'PATH';
+export PATH => uniq "$ENV{HOME}/bin", qw( /sbin /usr/sbin ), @p;
+
+## fix up some dircolors
+if ( my @c = env 'LS_COLORS' ) {
+	my %c = map { split /=/, $_, 2 } @c;
+	$c{'di'} = '01;38;5;32' if $ENV{'TERM'} =~ /-256color\z/;
+	$c{'*.m4a'} ||= $c{'*.wav'};
+	$c{'*.txz'} ||= $c{'*.tgz'};
+	$c{ '*.xz'} ||= $c{ '*.gz'};
+	export LS_COLORS => map { join '=', $_, $c{$_} } sort keys %c;
+}
+
+export MANPATH => uniq env 'MANPATH';
+
+for ( @INC ) {
+	next unless -e "$_/Pod/Perldoc/ToTerm.pm";
+	export PERLDOC       => '-o term';
+	export PERLDOC_PAGER => 'less -R';
+	last;
+}
+__END__
 
 if interactive_shell && exists locale ; then
 	L=( $( locale -a ) )
@@ -239,37 +269,3 @@ v=${BASH_VERSION%%.*}
 (( v >= 2 )) && HISTCONTROL=erasedups
 (( v >= 4 )) && shopt -s autocd checkjobs globstar
 unset v
-
-return <<'__END__'
-
-#!perl
-use strict;
-sub env   { grep length, split /:/, $ENV{$_[0]} }
-sub shquo { map { s/'/'\''/g; "'$_'" } my @c = @_ }
-sub uniq  { my %seen; grep { !$seen{$_}++ } @_ }
-sub export { my $vn = shift; printf "export %s=%s\n", $vn, shquo join ':', @_ }
-
-## drop empty, dupe and current-dir components from $PATH and prepend $HOME/bin et al
-my @p = grep !/\A\.?\z/, env 'PATH';
-export PATH => uniq "$ENV{HOME}/bin", qw( /sbin /usr/sbin ), @p;
-
-## fix up some dircolors
-if ( my @c = env 'LS_COLORS' ) {
-	my %c = map { split /=/, $_, 2 } @c;
-	$c{'di'} = '01;38;5;32' if $ENV{'TERM'} =~ /-256color\z/;
-	$c{'*.m4a'} ||= $c{'*.wav'};
-	$c{'*.txz'} ||= $c{'*.tgz'};
-	$c{ '*.xz'} ||= $c{ '*.gz'};
-	export LS_COLORS => map { join '=', $_, $c{$_} } sort keys %c;
-}
-
-export MANPATH => uniq env 'MANPATH';
-
-for ( @INC ) {
-	next unless -e "$_/Pod/Perldoc/ToTerm.pm";
-	export PERLDOC       => '-o term';
-	export PERLDOC_PAGER => 'less -R';
-	last;
-}
-
-__END__
