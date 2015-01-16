@@ -193,6 +193,7 @@ alias rmcd..='rmdir "$PWD" && cd ..'
 alias man='LC_CTYPE=C man'
 alias m='mv -vi'
 alias pod=perldoc
+alias v=less
 alias ssh4='ssh -c arcfour'
 alias scp4='scp -c arcfour'
 alias rmv='rsync --remove-source-files'
