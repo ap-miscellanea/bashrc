@@ -16,7 +16,7 @@ running_on_cygwin && TERM=cygwin
 
 [[ ":$PATH:" == *":$HOME/bin:"* ]] || PATH=$HOME/bin:$PATH
 
-[ -d ~/perl5/perlbrew ] && source ~/perl5/perlbrew/etc/bashrc
+exists plenv && eval "`plenv init -`"
 
 if [ -t 0 ] ; then
 	exists stty      && stty kill undef
@@ -106,7 +106,6 @@ export TEST_JOBS=9        # FIXME
 
 for f in \
 	~/.bashrc.local \
-	~/perl5/perlbrew/etc/perlbrew-completion.bash \
 	/usr/local/Library/Contributions/brew_bash_completion.sh \
 	~/.git-completion \
 	~/.git-prompt \
