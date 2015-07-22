@@ -185,6 +185,7 @@ alias rmcd..='rmdir "$PWD" && cd ..'
 alias man='LC_CTYPE=C man'
 alias pod='PERLDOC_PAGER=less\ -R perldoc'
 alias m='mv -vi'
+alias rm='rm -d'
 alias v=less
 alias ssh4='ssh -c arcfour'
 alias scp4='scp -c arcfour'
