@@ -24,7 +24,7 @@ if [ -t 0 ] ; then
 	exists dircolors && eval $( TERM=vt100 dircolors -b )
 fi
 
-eval $( perl -x ~/.bashrc ) <<'__END__'
+eval $( /usr/bin/perl -x ~/.bashrc ) <<'__END__'
 #!perl
 use strict;
 sub env   { grep length, split /:/, $ENV{$_[0]} }
@@ -47,13 +47,6 @@ if ( my @c = env 'LS_COLORS' ) {
 }
 
 export MANPATH => uniq env 'MANPATH';
-
-for ( @INC ) {
-	next unless -e "$_/Pod/Perldoc/ToTerm.pm";
-	export PERLDOC       => '-o term';
-	export PERLDOC_PAGER => 'less -R';
-	last;
-}
 __END__
 
 if interactive_shell && exists locale ; then
@@ -190,8 +183,8 @@ alias la='ll -A'
 alias scratch='cd `mktemp -d ./scratch-XXXXXXXXXXXXXX`'
 alias rmcd..='rmdir "$PWD" && cd ..'
 alias man='LC_CTYPE=C man'
+alias pod='PERLDOC_PAGER=less\ -R perldoc'
 alias m='mv -vi'
-alias pod=perldoc
 alias v=less
 alias ssh4='ssh -c arcfour'
 alias scp4='scp -c arcfour'
