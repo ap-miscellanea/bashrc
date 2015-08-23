@@ -97,14 +97,7 @@ export TEST_JOBS=9        # FIXME
 # SHELL CUSTOMISATION
 # ===================
 
-for f in \
-	~/.bashrc.local \
-	/usr/local/Library/Contributions/brew_bash_completion.sh \
-	~/.git-completion \
-	~/.git-prompt \
-; do
-	[ -r "$f" ] && source "$f"
-done
+[ -r ~/.bashrc.local ] && source ~/.bashrc.local
 
 escseq() {
 	local ESC
