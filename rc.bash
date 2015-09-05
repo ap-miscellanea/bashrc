@@ -100,65 +100,29 @@ export TEST_JOBS=9        # FIXME
 
 [ -r ~/.bashrc.local ] && source ~/.bashrc.local
 
-escseq() {
-	local ESC
-	local fmt
-	if [[ $TERM == putty* ]]
-		then fmt='\e[%sm'
-		else fmt='\[\e[%sm\]'
-	fi
-	while [ "$*" ] ; do
-		if [[ $1 == %* ]] ; then
-			ESC="$ESC;${1#%}"
-		else
-			[ "$ESC" ] && printf $fmt "$ESC"
-			printf '%s' "$1"
-			unset ESC
-		fi
-		shift
-	done
-	[ "$ESC" ] && printf $fmt "$ESC"
-}
+exists dirsize || dirsize() { return 0 ; }
+type -t __git_ps1 > /dev/null || __git_ps1() { return 0 ; }
 
-if type -t __git_ps1 > /dev/null ; then
-	GIT_PS1_SHOWDIRTYSTATE=1
-	#GIT_PS1_SHOWSTASHSTATE=1
-	#GIT_PS1_SHOWUNTRACKEDFILES=1
-	dirbranch() {
-		x=$(__git_ps1 "%s")
-		[ "$x" ] || return 1
-		echo "$x"
-	}
-else
-	dirbranch() { return 1 ; }
-fi
-
-exists dirsize || dirsize() { echo '?' ; }
-
-case $TERM in
-	xterm*|rxvt*|putty*|screen*)
-		prompt_termtitle() {
-			case "$PWD" in
-				"$HOME") p=\~         ;;
-				/)       p=/          ;;
-				*)       p=${PWD##*/} ;;
-			esac
-			printf '\e]0;%s\007' "$USER@${HOSTNAME%%.*} : $p"
-		} ;;
-	*) prompt_termtitle() { return ; } ;;
-esac
-
+GIT_PS1_SHOWDIRTYSTATE=1
+GIT_PS1_SHOWSTASHSTATE=1
 prompt_command() {
-	prompt_termtitle
-
-	JOBS_INDICATOR=
-	local n=$( jobs | wc -l )
-	(( n > 0 )) && JOBS_INDICATOR="$n+"
-
-	DIRINFO=$( dirbranch || dirsize -Hb )
+	PS1_GIT=`__git_ps1 '%s'`
+	if [ -z "$PS1_GIT" ]
+		then PS1_DIR=`dirsize -Hb`
+		else PS1_DIR=
+	fi
+	if PS1_JOBS=`jobs | egrep -c .`
+		then PS1_JOBS+='+'
+		else PS1_JOBS=
+	fi
 }
 PROMPT_COMMAND=prompt_command
-PS1=$( escseq '[' %36 '\t' %0 '] ' %1 '\h ' %1 %33 '\w' %1 ' ($DIRINFO) ' %1 %31 '$JOBS_INDICATOR' %1 '\$ ' %0 )
+
+PS1='[<36>\t<0>] <1>\h <33>\w<0;1> ($PS1_DIR$PS1_GIT) <1;31>$PS1_JOBS<0;1>\$ <0>'
+PS1=${PS1//</'\[\e['} ; PS1=${PS1//>/'m\]'}
+case $TERM in
+	xterm*|rxvt*|putty*|screen*) PS1='\[\e]0;\u@\h \W\a\]'$PS1 ;;
+esac
 
 # cygwin hack to get initial $PWD reformatted properly
 running_on_cygwin &&  cd "$PWD"
