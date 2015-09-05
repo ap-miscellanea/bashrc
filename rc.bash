@@ -119,8 +119,8 @@ prompt_command() {
 }
 PROMPT_COMMAND=prompt_command
 
-PS1='<36>\t<0;1;33> \h <0;1>\w<0> $PS1_DIR<38;5;215>$PS1_GIT <0;1;31>$PS1_JOBS<0;1>\$ <0>'
-colorful_terminal || PS1=${PS1/<38;5;215>/<33>}
+PS1='<38;5;39>\t<0> <1;38;5;226>\h<0> <1>\w<0> $PS1_DIR<38;5;215>$PS1_GIT<0> <1;31>$PS1_JOBS<0;1>\$<0> '
+colorful_terminal || { PS1=${PS1/38;5;39/36} ; PS1=${PS1/38;5;226/33} ; PS1=${PS1/38;5;215/33} ; }
 PS1=${PS1//</'\[\e['} ; PS1=${PS1//>/'m\]'}
 case $TERM in
 	xterm*|rxvt*|putty*|screen*) PS1='\[\e]0;\u@\h \W\a\]'$PS1 ;;
