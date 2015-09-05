@@ -106,7 +106,7 @@ type -t __git_ps1 > /dev/null || __git_ps1() { return 0 ; }
 GIT_PS1_SHOWDIRTYSTATE=1
 GIT_PS1_SHOWSTASHSTATE=1
 prompt_command() {
-	PS1_GIT=`__git_ps1 '%s'`
+	PS1_GIT=`__git_ps1 '(%s)'`
 	if [ -z "$PS1_GIT" ]
 		then PS1_DIR=`dirsize -Hb`
 		else PS1_DIR=
@@ -118,7 +118,8 @@ prompt_command() {
 }
 PROMPT_COMMAND=prompt_command
 
-PS1='[<36>\t<0>] <1>\h <33>\w<0;1> ($PS1_DIR$PS1_GIT) <1;31>$PS1_JOBS<0;1>\$ <0>'
+PS1='<36>\t<0;1;33> \h <0;1>\w<0> $PS1_DIR<38;5;215>$PS1_GIT <0;1;31>$PS1_JOBS<0;1>\$ <0>'
+colorful_terminal || PS1=${PS1/<38;5;215>/<33>}
 PS1=${PS1//</'\[\e['} ; PS1=${PS1//>/'m\]'}
 case $TERM in
 	xterm*|rxvt*|putty*|screen*) PS1='\[\e]0;\u@\h \W\a\]'$PS1 ;;
