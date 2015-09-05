@@ -3,6 +3,7 @@
 exists() { [[ $( type -t "$1" ) == file ]] ; }
 running_on_cygwin () { [[ $MSYSTEM = MINGW32 ]] ; }
 interactive_shell () { [[ $- == *i* ]] ; }
+colorful_terminal () { [[ $TERM == *-256color ]] ; }
 
 # GENERIC ENVIRONMENT STUFF
 # =========================
@@ -203,7 +204,7 @@ if exists git ; then
 	alias ..g='cd `git rev-parse --show-cdup`'
 fi
 
-if [[ $TERM == *-256color ]]
+if colorful_terminal
 	then strftime_format=$'\e[38;5;246m%d.%b’%y \e[38;5;252m%T\e[0m'
 	else strftime_format='%d.%b'\'\\\'\''%y %T'
 fi
