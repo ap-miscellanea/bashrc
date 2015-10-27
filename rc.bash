@@ -161,11 +161,6 @@ fi
 
 if exists git ; then
 	alias s='git st'
-	gg() {
-		[ "`git rev-parse --is-inside-work-tree 2>&-`" = true ] || set -- --no-index ${1+"$@"}
-		git grep -E ${1+"$@"}
-	}
-	alias ggv='gg -O${DISPLAY:+g}vim' ; exists mvim && alias ggv='gg -Omvim'
 	alias diff='git diff --no-index'
 	alias ..g='cd `git rev-parse --show-cdup`'
 fi
