@@ -3,6 +3,12 @@ running_on_cygwin () { [[ $MSYSTEM = MINGW32 ]] ; }
 interactive_shell () { [[ $- == *i* ]] ; }
 colorful_terminal () { [[ $TERM == *-256color ]] ; }
 
+if (( BASH_VERSINFO < 4 )) ; then
+	try () { exists "$1" && command "$@" ; }
+else
+	try () { ( command_not_found_handle () { : ; } ; command "$@" ) }
+fi
+
 # GENERIC ENVIRONMENT STUFF
 # =========================
 
@@ -15,12 +21,12 @@ running_on_cygwin && TERM=cygwin
 
 [[ ":$PATH:" == *":$HOME/bin:"* ]] || PATH=$HOME/bin:$PATH
 
-exists plenv && eval "`plenv init -`"
+eval "`try plenv init -`"
 
 if [ -t 0 ] ; then
-	exists stty      && stty kill undef
-	exists setterm   && setterm -blength 0
-	exists dircolors && eval "`TERM=vt100 dircolors -b`"
+	try stty kill undef
+	try setterm -blength 0
+	TERM=vt100 eval "`try dircolors -b`"
 fi
 
 eval "`/usr/bin/perl -x ~/.bashrc`" <<'__END__'
@@ -48,14 +54,13 @@ if ( my @c = env 'LS_COLORS' ) {
 export MANPATH => uniq env 'MANPATH';
 __END__
 
-if interactive_shell && exists locale ; then
-	L=( $( locale -a ) )
-	for l in "${L[@]}" ; do
+if interactive_shell ; then
+	while read l ; do
 		case "$l" in
 			en_GB.utf8|en_GB.UTF-8) export LANG=$l ;;
 			de_DE.utf8|de_DE.UTF-8) export LC_CTYPE=$l ;;
 		esac
-	done
+	done < <( try locale -a )
 fi
 
 export EDITOR=vim
