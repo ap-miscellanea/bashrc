@@ -1,5 +1,3 @@
-#!/bin/bash
-
 exists() { [[ $( type -t "$1" ) == file ]] ; }
 running_on_cygwin () { [[ $MSYSTEM = MINGW32 ]] ; }
 interactive_shell () { [[ $- == *i* ]] ; }
