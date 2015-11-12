@@ -20,10 +20,10 @@ exists plenv && eval "`plenv init -`"
 if [ -t 0 ] ; then
 	exists stty      && stty kill undef
 	exists setterm   && setterm -blength 0
-	exists dircolors && eval $( TERM=vt100 dircolors -b )
+	exists dircolors && eval "`TERM=vt100 dircolors -b`"
 fi
 
-eval $( /usr/bin/perl -x ~/.bashrc ) <<'__END__'
+eval "`/usr/bin/perl -x ~/.bashrc`" <<'__END__'
 #!perl
 use strict;
 sub env   { grep length, split /:/, $ENV{$_[0]} }
