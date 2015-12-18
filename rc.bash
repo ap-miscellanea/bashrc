@@ -192,8 +192,8 @@ else
 	alias ls='/bin/ls -F -b -G'
 fi
 
-exists perldoc-complete && complete -C perldoc-complete -o nospace -o default pod
-exists     ssh-complete && complete -C     ssh-complete            -o default ssh
+complete -C perldoc-complete -o nospace -o default pod
+complete -C     ssh-complete            -o default ssh
 
 if interactive_shell && ! running_on_cygwin ; then
 	bind -x '"\C-l": clear'
