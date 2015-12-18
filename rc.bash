@@ -203,9 +203,7 @@ fi
 HISTIGNORE='l[sla]:[bf]g'
 HISTSIZE=200000
 HISTFILESIZE=${HISTSIZE}
-if [ "$strftime_format" ] ; then
-	HISTTIMEFORMAT="$strftime_format  "
-fi
+[ "$strftime_format" ] && HISTTIMEFORMAT="$strftime_format  "
 
 FCEDIT=vim
 
