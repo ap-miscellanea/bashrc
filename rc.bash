@@ -163,9 +163,9 @@ if exists ionice && ! [[ ${HOSTNAME%%.*} == ksm ]] ; then
 fi
 
 if exists git ; then
-	alias s='git st'
 	alias diff='git diff --no-index'
-	alias ..g='cd `git rev-parse --show-cdup`'
+	alias ..g='cd `git rev-parse --show-cdup || echo /dev/null`'
+	alias s='git st'
 fi
 
 if colorful_terminal
