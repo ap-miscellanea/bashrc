@@ -22,33 +22,16 @@ running_on_cygwin && TERM=cygwin
 if [ -t 0 ] ; then
 	try stty kill undef
 	try setterm -blength 0
-	TERM=vt100 eval "`try dircolors -b`"
+	exists dircolors && eval "`TERM=vt100 dircolors -b <( dircolors -p | if colorful_terminal ; then sed 's/^DIR .*/DIR 01;38;5;32/' ; else cat ; fi )`"
 fi
 
-eval "`/usr/bin/perl -x ~/.bashrc`" <<'__END__'
-#!perl
-use strict;
-sub env   { grep length, split /:/, $ENV{$_[0]} }
-sub shquo { map { s/'/'\''/g; "'$_'" } my @c = @_ }
-sub uniq  { my %seen; grep { !$seen{$_}++ } @_ }
-sub export { my $vn = shift; printf "export %s=%s\n", $vn, shquo join ':', @_ }
-
-## drop empty, dupe and current-dir components from $PATH and prepend $HOME/bin et al
-my @p = grep !/\A\.?\z/, env 'PATH';
-export PATH => uniq "$ENV{HOME}/bin", qw( /sbin /usr/sbin ), @p;
-
-## fix up some dircolors
-if ( my @c = env 'LS_COLORS' ) {
-	my %c = map { split /=/, $_, 2 } @c;
-	$c{'di'} = '01;38;5;32' if $ENV{'TERM'} =~ /-256color\z/;
-	$c{'*.m4a'} ||= $c{'*.wav'};
-	$c{'*.txz'} ||= $c{'*.tgz'};
-	$c{ '*.xz'} ||= $c{ '*.gz'};
-	export LS_COLORS => map { join '=', $_, $c{$_} } sort keys %c;
-}
-
-export MANPATH => uniq env 'MANPATH';
-__END__
+PATH=:$PATH:
+PATH=${PATH//:.:} # remove current-dir components
+PATH=${PATH#:}
+PATH=${PATH%:}
+for p in /sbin /usr/sbin ~/bin ; do
+	[[ :$PATH: == *:$p:* ]] || PATH=$p${PATH+:}$PATH
+done
 
 if interactive_shell ; then
 	while read l ; do
