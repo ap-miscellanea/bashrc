@@ -19,10 +19,6 @@ export LC_CTYPE=C
 
 running_on_cygwin && TERM=cygwin
 
-[[ ":$PATH:" == *":$HOME/bin:"* ]] || PATH=$HOME/bin:$PATH
-
-eval "`try plenv init -`"
-
 if [ -t 0 ] ; then
 	try stty kill undef
 	try setterm -blength 0
