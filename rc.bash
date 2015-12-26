@@ -1,4 +1,4 @@
-exists() { [[ $( type -t "$1" ) == file ]] ; }
+exists () { [[ $( type -t "$1" ) == file ]] ; }
 running_on_cygwin () { [[ $MSYSTEM = MINGW32 ]] ; }
 interactive_shell () { [[ $- == *i* ]] ; }
 colorful_terminal () { [[ $TERM == *-256color ]] ; }
@@ -82,12 +82,12 @@ export TEST_JOBS=9        # FIXME
 
 [ -r ~/.bashrc.local ] && source ~/.bashrc.local
 
-exists dirsize || dirsize() { return 0 ; }
-declare -fF __git_ps1 > /dev/null || __git_ps1() { return 0 ; }
+exists dirsize || dirsize () { return 0 ; }
+declare -fF __git_ps1 > /dev/null || __git_ps1 () { return 0 ; }
 
 GIT_PS1_SHOWDIRTYSTATE=1
 GIT_PS1_SHOWSTASHSTATE=1
-prompt_command() {
+prompt_command () {
 	PS1_GIT=`__git_ps1 '(%s)'`
 	if [[ -z $PS1_GIT ]]
 		then PS1_DIR=`dirsize -Hb`
@@ -109,9 +109,9 @@ case $TERM in
 esac
 
 # cygwin hack to get initial $PWD reformatted properly
-running_on_cygwin &&  cd "$PWD"
+running_on_cygwin && cd "$PWD"
 
-mcd()  { mkdir -p "$1" ; cd "$1" ; }
+mcd () { mkdir -p "$1" ; cd "$1" ; }
 
 unalias -a
 alias -- -='popd 2>/dev/null || cd -'
