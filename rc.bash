@@ -68,7 +68,6 @@ export ZIPOPT=-9
 export GREP_OPTIONS='--directories=skip --binary-files=without-match'
 export RSYNC_RSH=ssh
 export CFLAGS='-Os -march=native -pipe -fomit-frame-pointer'
-export CPPFLAGS=$CFLAGS
 export CXXFLAGS=$CFLAGS
 export PERL_CPANM_OPT=--no-man-pages
 export HARNESS_OPTIONS=j9 # FIXME
