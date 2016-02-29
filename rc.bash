@@ -169,6 +169,7 @@ if ls --version &> /dev/null ; then
 	alias ls="$ls_alias"
 	unset ls_alias
 else
+	export LSCOLORS=`printf '%s' Ex fx cx dx bx eg ed ab ag ac ad` # default except bolded dirs
 	alias ls='/bin/ls -F -b -G'
 fi
 
