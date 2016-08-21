@@ -145,7 +145,7 @@ fi
 
 if exists git ; then
 	alias diff='git diff --no-index'
-	alias ..g='cd `git rev-parse --show-cdup || echo /dev/null`'
+	alias g..='cd "`git rev-parse --show-toplevel || echo /dev/null`" 2>/dev/null'
 	alias s='git st'
 fi
 
