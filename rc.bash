@@ -44,6 +44,7 @@ fi
 
 export EDITOR=vim
 export VISUAL=vim
+export MYVIMRC=$HOME/.vim/vimrc VIMINIT='source $MYVIMRC' # help old Vims along
 
 export PAGER=less
 export LESS=-QSX
