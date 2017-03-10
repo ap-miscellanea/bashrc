@@ -89,15 +89,8 @@ GIT_PS1_SHOWDIRTYSTATE=1
 GIT_PS1_SHOWSTASHSTATE=1
 prompt_command () {
 	PS1_GIT=`__git_ps1 '(%s)'`
-	if [[ -z $PS1_GIT ]]
-		then PS1_DIR=`dirsize -Hb`
-		else PS1_DIR=
-	fi
-	PS1_JOBS=`jobs`
-	if [[ -n $PS1_JOBS ]] ; then
-		IFS=$'\n' read -d '' -a PS1_JOBS <<< "$PS1_JOBS" # split lines
-		PS1_JOBS=${#PS1_JOBS[@]}+
-	fi
+	PS1_DIR=`[[ -z $PS1_GIT ]] && dirsize -Hb`
+	PS1_JOBS=`set -- $( jobs -p ) ; (( $# )) && echo $#+`
 }
 PROMPT_COMMAND=prompt_command
 
