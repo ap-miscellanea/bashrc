@@ -178,6 +178,7 @@ if interactive_shell && ! running_on_cygwin ; then
 fi
 
 HISTIGNORE='l[sla]:[bf]g'
+(( BASH_VERSINFO >= 2 )) && HISTCONTROL=erasedups
 HISTSIZE=200000
 HISTFILESIZE=${HISTSIZE}
 [ "$strftime_format" ] && HISTTIMEFORMAT="$strftime_format  "
@@ -188,10 +189,5 @@ unset MAIL MAILCHECK MAILPATH
 
 unset CDPATH
 
-v=${BASH_VERSION%%.*}
-(( v >= 1 )) && shopt -s checkhash checkwinsize cmdhist \
-                         extglob histappend histverify \
-                         no_empty_cmd_completion xpg_echo
-(( v >= 2 )) && HISTCONTROL=erasedups
-(( v >= 4 )) && shopt -s autocd checkjobs globstar
-unset v
+shopt -s checkhash checkwinsize cmdhist extglob histappend histverify no_empty_cmd_completion xpg_echo
+(( BASH_VERSINFO >= 4 )) && shopt -s autocd checkjobs globstar
