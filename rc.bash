@@ -29,13 +29,11 @@ while read l ; do
 	esac
 done < <( try locale -a )
 
+[ -t 0 ] && stty kill undef
 running_on_cygwin && TERM=cygwin
+case "$TERM" in con|linux) setterm --blength 0 ;; esac
 
-if [ -t 0 ] ; then
-	try stty kill undef
-	try setterm -blength 0
-	exists dircolors && eval "`TERM=vt100 dircolors -b <( dircolors -p | if colorful_terminal ; then sed 's/^DIR .*/DIR 01;38;5;32/' ; else cat ; fi )`"
-fi
+exists dircolors && eval "`TERM=vt100 dircolors -p | if colorful_terminal ; then sed 's/^DIR .*/DIR 01;38;5;32/' ; else cat ; fi | dircolors -b -`"
 
 export EDITOR=vim
 export VISUAL=vim
