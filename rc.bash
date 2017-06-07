@@ -21,10 +21,13 @@ for p in /sbin /usr/sbin ~/bin ; do
 	[[ :$PATH: == *:$p:* ]] || PATH=$p${PATH+:}$PATH
 done
 
-export LANG=C
-export LC_ALL=
-export LC_COLLATE=C
-export LC_CTYPE=C
+export LANG=C LC_COLLATE=C LC_CTYPE=C LC_ALL=
+while read l ; do
+	case "$l" in
+		en_GB.utf8|en_GB.UTF-8) export LANG=$l ;;
+		de_DE.utf8|de_DE.UTF-8) export LC_CTYPE=$l ;;
+	esac
+done < <( try locale -a )
 
 running_on_cygwin && TERM=cygwin
 
@@ -32,15 +35,6 @@ if [ -t 0 ] ; then
 	try stty kill undef
 	try setterm -blength 0
 	exists dircolors && eval "`TERM=vt100 dircolors -b <( dircolors -p | if colorful_terminal ; then sed 's/^DIR .*/DIR 01;38;5;32/' ; else cat ; fi )`"
-fi
-
-if interactive_shell ; then
-	while read l ; do
-		case "$l" in
-			en_GB.utf8|en_GB.UTF-8) export LANG=$l ;;
-			de_DE.utf8|de_DE.UTF-8) export LC_CTYPE=$l ;;
-		esac
-	done < <( try locale -a )
 fi
 
 export EDITOR=vim
