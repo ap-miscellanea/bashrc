@@ -26,7 +26,8 @@ if [ -t 0 ] ; then
 fi
 
 PATH=:$PATH:
-PATH=${PATH//:.:} # remove current-dir components
+while [[ $PATH == *::* ]]  ; do PATH=${PATH//::/:}  ; done
+while [[ $PATH == *:.:* ]] ; do PATH=${PATH//:.:/:} ; done
 PATH=${PATH#:}
 PATH=${PATH%:}
 for p in /sbin /usr/sbin ~/bin ; do
