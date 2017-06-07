@@ -3,8 +3,7 @@ running_on_cygwin () { [[ $MSYSTEM = MINGW32 ]] ; }
 interactive_shell () { [[ $- == *i* ]] ; }
 colorful_terminal () { [[ $TERM == *-256color ]] ; }
 
-# GENERIC ENVIRONMENT STUFF
-# =========================
+#### PATH INIT #########################################################
 
 PATH=:$PATH:
 while [[ $PATH == *::* ]]  ; do PATH=${PATH//::/:}  ; done
@@ -15,6 +14,8 @@ for p in /sbin /usr/sbin ~/bin ; do
 	[[ :$PATH: == *:$p:* ]] || PATH=$p${PATH+:}$PATH
 done
 
+#### LOCALE INIT #######################################################
+
 export LANG=C LC_COLLATE=C LC_CTYPE=C LC_ALL=
 while read l ; do
 	case "$l" in
@@ -23,9 +24,13 @@ while read l ; do
 	esac
 done < <( locale -a 2> /dev/null )
 
+#### TERMINAL INIT #####################################################
+
 [ -t 0 ] && stty kill undef
 running_on_cygwin && TERM=cygwin
 case "$TERM" in con|linux) setterm --blength 0 ;; esac
+
+#### GENERAL ENVIRONMENT ###############################################
 
 exists dircolors && eval "`TERM=vt100 dircolors -p | if colorful_terminal ; then sed 's/^DIR .*/DIR 01;38;5;32/' ; else cat ; fi | dircolors -b -`"
 
@@ -63,11 +68,11 @@ export TEST_JOBS=9        # FIXME
 
 [ -d ~/.minicpan ] && export PERL_CPANM_OPT="$PERL_CPANM_OPT --mirror-only --mirror $HOME/.minicpan"
 
-
-# SHELL CUSTOMISATION
-# ===================
+#### MACHINE-LOCAL PREFS ###############################################
 
 [ -r ~/.bashrc.local ] && source ~/.bashrc.local
+
+#### SHELL SETTINGS ####################################################
 
 exists dirsize || dirsize () { return 0 ; }
 declare -fF __git_ps1 > /dev/null || __git_ps1 () { return 0 ; }
