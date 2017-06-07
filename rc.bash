@@ -12,6 +12,15 @@ fi
 # GENERIC ENVIRONMENT STUFF
 # =========================
 
+PATH=:$PATH:
+while [[ $PATH == *::* ]]  ; do PATH=${PATH//::/:}  ; done
+while [[ $PATH == *:.:* ]] ; do PATH=${PATH//:.:/:} ; done
+PATH=${PATH#:}
+PATH=${PATH%:}
+for p in /sbin /usr/sbin ~/bin ; do
+	[[ :$PATH: == *:$p:* ]] || PATH=$p${PATH+:}$PATH
+done
+
 export LANG=C
 export LC_ALL=
 export LC_COLLATE=C
@@ -24,15 +33,6 @@ if [ -t 0 ] ; then
 	try setterm -blength 0
 	exists dircolors && eval "`TERM=vt100 dircolors -b <( dircolors -p | if colorful_terminal ; then sed 's/^DIR .*/DIR 01;38;5;32/' ; else cat ; fi )`"
 fi
-
-PATH=:$PATH:
-while [[ $PATH == *::* ]]  ; do PATH=${PATH//::/:}  ; done
-while [[ $PATH == *:.:* ]] ; do PATH=${PATH//:.:/:} ; done
-PATH=${PATH#:}
-PATH=${PATH%:}
-for p in /sbin /usr/sbin ~/bin ; do
-	[[ :$PATH: == *:$p:* ]] || PATH=$p${PATH+:}$PATH
-done
 
 if interactive_shell ; then
 	while read l ; do
