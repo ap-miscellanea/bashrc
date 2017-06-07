@@ -3,12 +3,6 @@ running_on_cygwin () { [[ $MSYSTEM = MINGW32 ]] ; }
 interactive_shell () { [[ $- == *i* ]] ; }
 colorful_terminal () { [[ $TERM == *-256color ]] ; }
 
-if (( BASH_VERSINFO < 4 )) ; then
-	try () { exists "$1" && command "$@" ; }
-else
-	try () { ( command_not_found_handle () { : ; } ; command "$@" ) }
-fi
-
 # GENERIC ENVIRONMENT STUFF
 # =========================
 
@@ -27,7 +21,7 @@ while read l ; do
 		en_GB.utf8|en_GB.UTF-8) export LANG=$l ;;
 		de_DE.utf8|de_DE.UTF-8) export LC_CTYPE=$l ;;
 	esac
-done < <( try locale -a )
+done < <( locale -a 2> /dev/null )
 
 [ -t 0 ] && stty kill undef
 running_on_cygwin && TERM=cygwin
