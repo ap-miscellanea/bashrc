@@ -59,6 +59,11 @@ export MOSH_TITLE_NOPREFIX=1
 
 export LS_BLOCK_SIZE="'"1 # for GNU ls: show sizes in bytes and commify
 
+if colorful_terminal # for GNU ls/du
+	then export TIME_STYLE=+$'\e[38;5;246m%d.%b’%y \e[38;5;252m%T\e[0m'
+	else export TIME_STYLE=+'%d.%b'\'\\\'\''%y %T'
+fi
+
 export ZIPOPT=-9
 export GREP_OPTIONS='--directories=skip --binary-files=without-match'
 export RSYNC_RSH=ssh
@@ -137,11 +142,6 @@ if exists git ; then
 	alias s='git st'
 fi
 
-if colorful_terminal
-	then strftime_format=$'\e[38;5;246m%d.%b’%y \e[38;5;252m%T\e[0m'
-	else strftime_format='%d.%b'\'\\\'\''%y %T'
-fi
-
 # GNU ls or BSD?
 if ls --version &> /dev/null ; then
 	ls_alias='/bin/ls -F --quoting-style=escape --color=auto -T0 -v'
@@ -149,9 +149,6 @@ if ls --version &> /dev/null ; then
 	# if ls --group-directories-first --version &> /dev/null ; then
 	# 	ls_alias="$ls_alias"' --group-directories-first'
 	# fi
-	if [ "$strftime_format" ] && ls --time-style=iso --version &> /dev/null ; then
-		ls_alias="$ls_alias --time-style=+'$strftime_format'"
-	fi
 	alias ls="$ls_alias"
 	unset ls_alias
 else
@@ -171,7 +168,7 @@ HISTIGNORE='l[sla]:[bf]g'
 (( BASH_VERSINFO >= 2 )) && HISTCONTROL=erasedups
 HISTSIZE=200000
 HISTFILESIZE=${HISTSIZE}
-[ "$strftime_format" ] && HISTTIMEFORMAT="$strftime_format  "
+HISTTIMEFORMAT="${TIME_STYLE#+}  "
 
 FCEDIT=vim
 
