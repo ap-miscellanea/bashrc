@@ -146,13 +146,11 @@ fi
 
 # GNU ls or BSD?
 if ls --version &> /dev/null ; then
-	ls_alias='/bin/ls -F --quoting-style=escape --color=auto -T0 -v'
-	#ls_alias='/bin/ls -F --quoting-style=shell --color=auto -T0 -v'
-	# if ls --group-directories-first --version &> /dev/null ; then
-	# 	ls_alias="$ls_alias"' --group-directories-first'
-	# fi
-	alias ls="$ls_alias"
-	unset ls_alias
+	alias ls='/bin/ls -F --quoting-style=escape --color=auto -T0 -v'
+	#alias ls='/bin/ls -F --quoting-style=shell --color=auto -T0 -v'
+	#if ls --group-directories-first --version &> /dev/null ; then
+	#	eval "`alias ls`' --group-directories-first'"
+	#fi
 else
 	alias ls='/bin/ls -F -b -G'
 fi
