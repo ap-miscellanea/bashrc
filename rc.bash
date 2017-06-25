@@ -57,6 +57,8 @@ export MOSH_TITLE_NOPREFIX=1
 
 [ `uname` = Darwin ] && export COPYFILE_DISABLE=true
 
+export LS_BLOCK_SIZE="'"1 # for GNU ls: show sizes in bytes and commify
+
 export ZIPOPT=-9
 export GREP_OPTIONS='--directories=skip --binary-files=without-match'
 export RSYNC_RSH=ssh
@@ -147,9 +149,6 @@ if ls --version &> /dev/null ; then
 	# if ls --group-directories-first --version &> /dev/null ; then
 	# 	ls_alias="$ls_alias"' --group-directories-first'
 	# fi
-	if ls --block-size=\'1 --version &> /dev/null ; then
-		ls_alias="$ls_alias --block-size="\\\''1'
-	fi
 	if [ "$strftime_format" ] && ls --time-style=iso --version &> /dev/null ; then
 		ls_alias="$ls_alias --time-style=+'$strftime_format'"
 	fi
