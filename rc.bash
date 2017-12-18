@@ -128,8 +128,6 @@ alias rmv='rsync --remove-source-files'
 alias singlecore='env HARNESS_OPTIONS= TEST_JOBS= MAKEFLAGS='
 alias pmver='perl -e '\''system $^X, "-le", join "\n", q[#line 1 pmver], map qq[print "$_ \$$_\::VERSION" if require $_;], @ARGV'\'
 
-perl-lib () { eval "`perl -M'local::lib @ARGV' - "$@" 0<&-`" ; }
-
 exists qlmanage && alias ql='qlmanage -p &>/dev/null'
 
 if exists ionice && ! [[ ${HOSTNAME%%.*} == ksm ]] ; then
