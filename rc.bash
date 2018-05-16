@@ -121,9 +121,10 @@ alias rmcd..='rmdir "$PWD" && cd ..'
 alias man='LC_CTYPE=C man'
 alias pod='PERLDOC_PAGER=less\ -R perldoc'
 alias m='mv -vi'
-alias ssh4='ssh -c arcfour'
-alias scp4='scp -c arcfour'
-alias rmv='rsync --remove-source-files'
+alias ssh4='ssh -c arcfour256'
+alias scp4='scp -c arcfour256'
+alias rsync4="rsync -e 'ssh -Tc arcfour256 -oCompression=no'"
+alias rmv='rsync4 --remove-source-files'
 alias singlecore='env HARNESS_OPTIONS= TEST_JOBS= MAKEFLAGS='
 alias pmver='perl -e '\''system $^X, "-le", join "\n", q[#line 1 pmver], map qq[print "$_ \$$_\::VERSION" if require $_;], @ARGV'\'
 
