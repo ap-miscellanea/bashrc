@@ -71,7 +71,7 @@ export GREP_OPTIONS='--directories=skip --binary-files=without-match'
 export RSYNC_RSH=ssh
 export CFLAGS='-Os -march=native -pipe -fomit-frame-pointer'
 export CXXFLAGS=$CFLAGS
-export PERL_CPANM_OPT='--no-man-pages --with-recommends'
+export PERL_CPANM_OPT='--no-man-pages'
 export HARNESS_OPTIONS=j9 # FIXME
 export TEST_JOBS=9        # FIXME
 
