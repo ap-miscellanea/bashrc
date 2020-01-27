@@ -67,7 +67,6 @@ if colorful_terminal # for GNU ls/du
 fi
 
 export ZIPOPT=-9
-export GREP_OPTIONS='--directories=skip --binary-files=without-match'
 export RSYNC_RSH=ssh
 export CFLAGS='-Os -march=native -pipe -fomit-frame-pointer'
 export CXXFLAGS=$CFLAGS
@@ -113,6 +112,7 @@ alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 alias .....='cd ../../../..'
+alias grep='grep --directories=skip --binary-files=without-match'
 alias ddiff='LC_ALL=C TZ=UTC0 command diff -urd --unidirectional-new-file'
 alias ll='ls -l'
 alias la='ll -A'
