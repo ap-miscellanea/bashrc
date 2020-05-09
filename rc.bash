@@ -158,7 +158,7 @@ if interactive_shell && ! running_on_cygwin ; then
 	bind -x '"\C-\M-l": reset'
 fi
 
-HISTIGNORE='l[sla]:[bf]g'
+HISTIGNORE='l[sla]:[bf]g:  *'
 (( BASH_VERSINFO >= 2 )) && HISTCONTROL=erasedups
 HISTSIZE=200000
 HISTFILESIZE=${HISTSIZE}
