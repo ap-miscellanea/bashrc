@@ -57,7 +57,10 @@ exists open && BROWSER=open
 
 export MOSH_TITLE_NOPREFIX=1
 
-[ `uname` = Darwin ] && export COPYFILE_DISABLE=true
+if [ `uname` = Darwin ] ; then
+	export COPYFILE_DISABLE=true
+	export BASH_SILENCE_DEPRECATION_WARNING=1 # get lost
+fi
 
 export LS_BLOCK_SIZE="'"1 # for GNU ls: show sizes in bytes and commify
 
