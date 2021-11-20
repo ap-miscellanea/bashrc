@@ -85,6 +85,7 @@ export TEST_JOBS=9        # FIXME
 exists dirsize || dirsize () { return 0 ; }
 declare -fF __git_ps1 > /dev/null || __git_ps1 () { return 0 ; }
 
+export FILTER_BRANCH_SQUELCH_WARNING=1 # get lost
 GIT_PS1_SHOWDIRTYSTATE=1
 GIT_PS1_SHOWSTASHSTATE=1
 prompt_command () {
