@@ -127,7 +127,7 @@ alias man='LC_CTYPE=C man'
 alias pod='PERLDOC_PAGER=less\ -R perldoc'
 alias m='mv -vi'
 alias rmv='rsync --remove-source-files'
-alias singlecore='env HARNESS_OPTIONS= TEST_JOBS= MAKEFLAGS='
+alias singlecore='HARNESS_OPTIONS= TEST_JOBS= MAKEFLAGS='
 alias pmver='perl -e '\''system $^X, "-le", join "\n", q[#line 1 pmver], map qq[print "$_ \$$_\::VERSION" if require $_;], @ARGV'\'
 
 exists qlmanage && alias ql='qlmanage -p &>/dev/null'
