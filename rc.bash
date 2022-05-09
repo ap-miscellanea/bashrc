@@ -1,3 +1,5 @@
+unalias -a
+
 exists () { [[ $( type -t "$1" ) == file ]] ; }
 running_on_cygwin () { [[ $MSYSTEM = MINGW32 ]] ; }
 interactive_shell () { [[ $- == *i* ]] ; }
@@ -110,7 +112,6 @@ running_on_cygwin && cd "$PWD"
 
 mcd () { mkdir -p "$1" ; cd "$1" ; }
 
-unalias -a
 alias -- -='popd 2>/dev/null || cd -'
 alias ..='cd ..'
 alias ...='cd ../..'
