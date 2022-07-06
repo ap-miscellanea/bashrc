@@ -176,4 +176,4 @@ unset MAIL MAILCHECK MAILPATH
 unset CDPATH
 
 shopt -s checkhash checkwinsize cmdhist extglob histappend histverify no_empty_cmd_completion xpg_echo
-(( BASH_VERSINFO >= 4 )) && shopt -s autocd checkjobs globstar
+(( BASH_VERSINFO < 4 )) || shopt -s autocd checkjobs globstar
