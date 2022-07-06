@@ -67,7 +67,7 @@ fi
 export LS_BLOCK_SIZE="'"1 # for GNU ls: show sizes in bytes and commify
 
 if colorful_terminal # for GNU ls/du
-	then export TIME_STYLE=+$'\e[38;5;246m%d.%b’%y \e[38;5;252m%T\e[0m'
+	then export TIME_STYLE=+$'\e[38;5;246m%Y-%m-%d \e[38;5;252m%T\e[0m'
 	else export TIME_STYLE=+'%d.%b'\'\\\'\''%y %T'
 fi
 
