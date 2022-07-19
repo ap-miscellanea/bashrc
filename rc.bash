@@ -79,7 +79,8 @@ export PERL_CPANM_OPT='--no-man-pages'
 export HARNESS_OPTIONS=j9 # FIXME
 export TEST_JOBS=9        # FIXME
 
-[ -d ~/.minicpan ] && export PERL_CPANM_OPT="$PERL_CPANM_OPT --mirror-only --mirror $HOME/.minicpan"
+[ -d ~/.local/share/minicpan ] &&
+	PERL_CPANM_OPT+=" --mirror-only --mirror $HOME/.local/share/minicpan"
 
 #### MACHINE-LOCAL PREFS ###############################################
 
