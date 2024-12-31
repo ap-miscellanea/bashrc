@@ -165,7 +165,6 @@ if interactive_shell && ! running_on_cygwin ; then
 fi
 
 HISTIGNORE='l[sla]:[bf]g:  *'
-(( BASH_VERSINFO >= 2 )) && HISTCONTROL=erasedups
 HISTSIZE=999999
 unset HISTFILESIZE
 HISTTIMEFORMAT="${TIME_STYLE#+}  "
