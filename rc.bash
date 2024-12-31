@@ -164,7 +164,7 @@ if interactive_shell && ! running_on_cygwin ; then
 	bind -x '"\C-\M-l": reset'
 fi
 
-HISTIGNORE='l[sla]:[bf]g:  *'
+HISTIGNORE='-:..:...:....:.....:l[sla]:[bf]g:  *'
 HISTSIZE=999999
 unset HISTFILESIZE
 HISTTIMEFORMAT="${TIME_STYLE#+}  "
