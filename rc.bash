@@ -21,7 +21,7 @@ done
 export LANG=C LC_COLLATE=C LC_CTYPE=C LC_ALL=
 while read l ; do
 	case "$l" in
-		en_GB.utf8|en_GB.UTF-8) export LANG=$l ;;
+		en_US.utf8|en_US.UTF-8) export LANG=$l ;;
 		de_DE.utf8|de_DE.UTF-8) export LC_CTYPE=$l ;;
 	esac
 done < <( locale -a 2> /dev/null )
